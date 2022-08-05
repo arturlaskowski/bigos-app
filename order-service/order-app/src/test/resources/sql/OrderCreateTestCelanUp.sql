@@ -1,0 +1,1 @@
+delete from "order".orders where customer_id = '4ece4645-2658-4c54-a182-b0edcfa46d3b';
