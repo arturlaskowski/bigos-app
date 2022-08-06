@@ -7,7 +7,7 @@ import com.bigos.order.domain.model.Order;
 
 public interface OrderDomainService {
 
-    OrderCreatedEvent initiate(Order order);
+    OrderCreatedEvent create(Order order);
 
     OrderPaidEvent pay(Order order);
 

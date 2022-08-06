@@ -8,9 +8,10 @@
     <artifactId>bigos-app</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>order-service</module>
         <module>common</module>
         <module>infrastructure</module>
+        <module>order-service</module>
+        <module>payment-service</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -28,33 +29,48 @@
     </properties>
 
     <dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>com.bigos.app</groupId>
-            <artifactId>common-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bigos.app</groupId>
-            <artifactId>common-adapters</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bigos.app</groupId>
-            <artifactId>order-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bigos.app</groupId>
-            <artifactId>order-app</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bigos.app</groupId>
-            <artifactId>order-adapters</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+        <dependencies>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>common-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>common-adapters</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>order-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>order-app</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>order-adapters</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>payment-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>payment-adapters</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>payment-app</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
     </dependencyManagement>
 
     <dependencies>

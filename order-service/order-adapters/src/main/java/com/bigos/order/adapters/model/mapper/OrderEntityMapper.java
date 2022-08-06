@@ -27,6 +27,7 @@ public class OrderEntityMapper {
                 .price(order.getPrice().amount())
                 .basket(basketItemsToBasketItemEntities(order.getId().id(), order.getBasket()))
                 .status(order.getStatus())
+                .creationDate(order.getCreationDate())
                 .failureMessages(order.getFailureMessages())
                 .build();
     }
@@ -40,17 +41,7 @@ public class OrderEntityMapper {
                 .price(new Money(orderEntity.getPrice()))
                 .basket(basketItemEntitiesToBasketItems(orderEntity.getBasket()))
                 .status(orderEntity.getStatus())
-                .failureMessages(orderEntity.getFailureMessages())
-                .build();
-    }
-
-    public Order orderEntityToTrackOrder(OrderEntity orderEntity) {
-        return Order.builder()
-                .id(new OrderId(orderEntity.getId()))
-                .customerId(new CustomerId(orderEntity.getCustomerId()))
-                .restaurantId(new RestaurantId(orderEntity.getRestaurantId()))
-                .price(new Money(orderEntity.getPrice()))
-                .status(orderEntity.getStatus())
+                .creationDate(orderEntity.getCreationDate())
                 .failureMessages(orderEntity.getFailureMessages())
                 .build();
     }

@@ -28,7 +28,7 @@ public class OrderCreateCommandHandler {
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
         Order order = orderMapper.createOrderCommandToOrder(createOrderCommand);
 
-        OrderCreatedEvent orderCreatedEvent = orderDomainService.initiate(order);
+        OrderCreatedEvent orderCreatedEvent = orderDomainService.create(order);
 
         orderRepository.save(order);
 

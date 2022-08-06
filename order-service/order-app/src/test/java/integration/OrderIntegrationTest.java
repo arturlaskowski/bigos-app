@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
 @SpringBootTest(classes = OrderServiceApplication.class)
-@Sql(value = {"classpath:sql/OrderCreateTestCelanUp.sql"}, executionPhase = AFTER_TEST_METHOD)
+@Sql(value = {"classpath:sql/OrderIntegrationTestCleanUp.sql"}, executionPhase = AFTER_TEST_METHOD)
 class OrderIntegrationTest {
 
     public static final UUID CUSTOMER_UUID = UUID.fromString("4ece4645-2658-4c54-a182-b0edcfa46d3b");

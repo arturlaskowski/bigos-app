@@ -12,10 +12,10 @@ import java.time.Instant;
 public class OrderDomainServiceImpl implements OrderDomainService {
 
     @Override
-    public OrderCreatedEvent initiate(Order order) {
-        //TODO Move Restaurant Menu to shared kernel and get price and name product by id
+    public OrderCreatedEvent create(Order order) {
+        //TODO Create Restaurant Menu to shared kernel and get price and name product by id
         order.initialize();
-        order.validate();
+        order.validatePrice();
         log.info("Order with id {} was created", order.getId());
         return new OrderCreatedEvent(order, Instant.now());
     }

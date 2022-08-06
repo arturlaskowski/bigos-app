@@ -4,7 +4,8 @@ create schema "order";
 
 create extension if not exists "uuid-ossp";
 
-drop type if exists order_status cascade ;
+drop type if exists order_status cascade;
+
 create type order_status as enum ('PENDING', 'PAID', 'APPROVED', 'CANCELLED', 'CANCELLING');
 create cast (character varying as order_status) with inout as implicit;
 

@@ -1,21 +1,34 @@
 package com.bigos.order.domain.model;
 
 
-import com.bigos.common.domain.vo.Money;
-import com.bigos.common.domain.vo.ProductId;
-import com.bigos.common.domain.vo.Quantity;
 import com.bigos.order.domain.exception.OrderDomainException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
+import static com.bigos.order.domain.OrderFixture.*;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class OrderTest {
+
+    @Test
+    void canInitializeOrder() {
+        //given
+        Order order = aOrder(new BigDecimal("42.26"), aBasketItem(new BigDecimal("10.00"), 2, new BigDecimal("20.00")),
+                aBasketItem(new BigDecimal("15.63"), 2, new BigDecimal("31.26")));
+
+        //when
+        order.initialize();
+
+        //then
+        assertTrue(order.isPendingStatus());
+        assertNotNull(order.getId());
+        assertNotNull(order.getCreationDate());
+        assertEquals(1, order.getBasket().get(0).getItemNumber());
+        assertEquals(2, order.getBasket().get(1).getItemNumber());
+    }
 
     @Test
     void cannotMakePayOperationWhenOrderIsNotInPendingState() {
@@ -107,73 +120,28 @@ class OrderTest {
         Order order = aOrder(OrderStatus.PAID);
 
         //when
-        order.startCancelling("Restauration reject orde");
+        order.startCancelling("Restauration reject order");
 
         //then
-        assertEquals("Restauration reject orde", order.getFailureMessages());
-    }
-
-    @Test
-    void orderMustHaveStatus() {
-        //expect
-        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() ->
-                aOrder(new BigDecimal(20), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20))).validate());
+        assertEquals("Restauration reject order", order.getFailureMessages());
     }
 
     @Test
     void orderPriceMustBeGreaterThanZero() {
         //expect
         assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() ->
-                aOrderWithInicializacion(new BigDecimal(-3), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20))).validate());
+                aOrderWithInicializacion(new BigDecimal(-3), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20))).validatePrice());
     }
 
     @Test
     void orderPriceMustBeTheSameLikeSumOfBasketItemsPrice() {
         //expect
         assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() ->
-                aOrderWithInicializacion(new BigDecimal(19), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20))).validate());
+                aOrderWithInicializacion(new BigDecimal(19), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20))).validatePrice());
 
         assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() ->
-                aOrderWithInicializacion(new BigDecimal(20), aBasketItem(new BigDecimal(10), 1, new BigDecimal(20))).validate());
+                aOrderWithInicializacion(new BigDecimal(20), aBasketItem(new BigDecimal(10), 1, new BigDecimal(20))).validatePrice());
 
-        aOrderWithInicializacion(new BigDecimal(20), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20))).validate();
-    }
-
-    @Test
-    void canInitializeOrder() {
-        //given
-        Order order = aOrder(new BigDecimal(20), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20)));
-
-        //when
-        order.initialize();
-
-        //then
-        assertTrue(order.isPendingStatus());
-
-    }
-
-    private static Order aOrder(OrderStatus status) {
-        return Order.builder().status(status).build();
-    }
-
-    private static Order aOrderWithInicializacion(BigDecimal price, BasketItem... basketItem) {
-        Order order = aOrder(price, basketItem);
-        order.initialize();
-        return order;
-    }
-
-    private static Order aOrder(BigDecimal price, BasketItem... basketItem) {
-        return Order.builder()
-                .basket(List.of(basketItem))
-                .price(new Money(price))
-                .build();
-    }
-
-    private static BasketItem aBasketItem(BigDecimal productCost, Integer quantity, BigDecimal totalPrice) {
-        return BasketItem.builder()
-                .product(new Product(new ProductId(UUID.randomUUID()), new Money(productCost)))
-                .quantity(new Quantity(quantity))
-                .totalPrice(new Money(totalPrice))
-                .build();
+        aOrderWithInicializacion(new BigDecimal(20), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20))).validatePrice();
     }
 }

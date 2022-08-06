@@ -10,8 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+
+import static com.bigos.order.domain.model.OrderStatus.PENDING;
+import static java.time.Instant.now;
 
 @AllArgsConstructor
 @Builder
@@ -32,21 +36,19 @@ public class Order implements AggregateRoot {
 
     private OrderStatus status;
 
+    private Instant creationDate;
+
     private String failureMessages;
 
     public void initialize() {
         id = new OrderId(UUID.randomUUID());
-        status = OrderStatus.PENDING;
+        status = PENDING;
+        creationDate = now();
         initializeBasketItems();
     }
 
-    public void validate() {
-        validateInitialization();
-        validatePrice();
-    }
-
     public boolean isPendingStatus() {
-        return OrderStatus.PENDING == status;
+        return PENDING == status;
     }
 
     public boolean isPaidStatus() {
@@ -66,7 +68,7 @@ public class Order implements AggregateRoot {
     }
 
     public void pay() {
-        if (status != OrderStatus.PENDING) {
+        if (status != PENDING) {
             throw new OrderDomainException("The payment operation cannot be performed. Order is in incorrect state: " + status);
         }
         status = OrderStatus.PAID;
@@ -94,15 +96,9 @@ public class Order implements AggregateRoot {
         status = OrderStatus.CANCELLED;
     }
 
-    private void validateInitialization() {
-        if (status == null || getId() == null) {
-            throw new OrderDomainException("Order is not correctly initialized");
-        }
-    }
-
-    private void validatePrice() {
-        if (price == null || !price.isGreaterThanZero()) {
-            throw new OrderDomainException("Order price must be greater than zero");
+    public void validatePrice() {
+        if (!price.isGreaterThanZero()) {
+            throw new OrderDomainException("Order price: " + price.amount() + " must be greater than zero");
         }
 
         Money basketItemsTotalCost = basket.stream().map(item -> {
