@@ -10,8 +10,6 @@ import com.bigos.payment.domain.event.PaymentRejectedEvent;
 import com.bigos.payment.domain.model.Payment;
 import com.bigos.payment.domain.model.Wallet;
 import com.bigos.payment.domain.model.vo.WalletId;
-import com.bigos.payment.domain.service.PaymentDomainService;
-import com.bigos.payment.domain.service.PaymentDomainServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -21,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PaymentDomainServiceTest {
 
-    PaymentDomainService paymentDomainService = new PaymentDomainServiceImpl();
+    private final PaymentDomainService paymentDomainService = new PaymentDomainServiceImpl();
 
     @Test
     void shouldCompletePayment() {

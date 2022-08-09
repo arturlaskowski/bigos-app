@@ -12,6 +12,7 @@
         <module>infrastructure</module>
         <module>order-service</module>
         <module>payment-service</module>
+        <module>restaurant-service</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -26,6 +27,7 @@
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <archunit-junit5.version>1.0.0-rc1</archunit-junit5.version>
     </properties>
 
     <dependencyManagement>
@@ -70,6 +72,21 @@
                 <artifactId>payment-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>restaurant-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>restaurant-adapters</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>restaurant-app</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -89,7 +106,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>

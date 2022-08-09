@@ -19,7 +19,6 @@ import java.util.UUID;
 @Service
 public class PaymentMessageListenerImpl implements PaymentMessageListener {
 
-
     private final PaymentRepository paymentRepository;
     private final WalletRepository walletRepository;
     private final PaymentMessageMapper paymentMessageMapper;

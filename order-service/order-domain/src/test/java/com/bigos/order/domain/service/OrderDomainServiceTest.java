@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OrderDomainServiceTest {
 
-    OrderDomainService orderDomainService = new OrderDomainServiceImpl();
+    private final OrderDomainService orderDomainService = new OrderDomainServiceImpl();
 
     @Test
     void shouldCreateOrder() {

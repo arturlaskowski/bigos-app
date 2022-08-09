@@ -1,0 +1,15 @@
+server:
+  port: 9004
+
+logging:
+  level:
+    com.bigos.app: DEBUG
+
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5401/postgres?currentSchema=restaurant&binaryTransfer=true&reWriteBatchedInserts=true
+    username: postgres
+    password: postgres

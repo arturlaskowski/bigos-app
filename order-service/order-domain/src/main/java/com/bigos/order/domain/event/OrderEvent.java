@@ -10,7 +10,7 @@ public abstract class OrderEvent implements DomainEvent<Order> {
     private final Order order;
     private final Instant createdAt;
 
-    public OrderEvent(Order order, Instant createdAt) {
+    OrderEvent(Order order, Instant createdAt) {
         this.order = order;
         this.createdAt = createdAt;
     }

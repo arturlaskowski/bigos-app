@@ -5,7 +5,6 @@ import com.bigos.payment.domain.model.vo.PaymentStatus;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,10 +58,6 @@ class PaymentTest {
 
         //then
         assertEquals(PaymentStatus.CANCELLED, payment.getStatus());
-    }
-
-    private Payment aPaymentWithPriceLowerThanZero() {
-        return aPayment(new BigDecimal("-2.31"));
     }
 
     private Payment aPayment() {
