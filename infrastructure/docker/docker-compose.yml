@@ -1,16 +1,140 @@
-version: '3.1'
+version: '3.7'
 services:
-  bigos-db:
+  postgres:
+    container_name: bigos-db
     image: postgres:14.1-alpine
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
     ports:
-      - '5401:5432'
+      - "5401:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
     volumes:
-      - data:/var/lib/postgresql/data
-
-volumes:
-  data:
-    driver: local
+      - "./volumes/postgres/"
+  zookeeper:
+    container_name: bigos-zookeeper
+    image: confluentinc/cp-zookeeper:${KAFKA_VERSION}
+    user: "0:0"
+    hostname: zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_SERVERS: 'zookeeper:2888:3888'
+    volumes:
+      - "./volumes/zookeeper:/var/lib/zookeeper/data"
+    networks:
+      bigos-network:
+  schema-registry:
+    container_name: bigos-schema-registry
+    image: confluentinc/cp-schema-registry:${KAFKA_VERSION}
+    hostname: schema-registry
+    restart: always
+    depends_on:
+      - zookeeper
+      - kafka-broker1
+      - kafka-broker2
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-broker-2:9092,LISTENER_LOCAL://localhost:29092
+      SCHEMA_REGISTRY_DEBUG: 'true'
+    networks:
+      bigos-network:
+  kafka-broker1:
+    container_name: bigos-kafka-broker1
+    image: confluentinc/cp-kafka:${KAFKA_VERSION}
+    user: "0:0"
+    hostname: kafka-broker-1
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - "19092:19092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker-1:9092,LISTENER_LOCAL://localhost:19092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,LISTENER_LOCAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_COMPRESSION_TYPE: producer
+    volumes:
+      - "./volumes/kafka/broker1:/var/lib/kafka/data"
+    networks:
+      bigos-network:
+  kafka-broker2:
+    container_name: bigos-kafka-broker2
+    image: confluentinc/cp-kafka:${KAFKA_VERSION}
+    hostname: kafka-broker-2
+    user: "0:0"
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker-2:9092,LISTENER_LOCAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,LISTENER_LOCAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_COMPRESSION_TYPE: producer
+    volumes:
+      - "./volumes/kafka/broker2:/var/lib/kafka/data"
+    networks:
+      bigos-network:
+  kafka-manager:
+    container_name: bigos-kafka-manager
+    image: hlebalbau/kafka-manager
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: "zookeeper:2181"
+    networks:
+      bigos-network:
+  init-kafka:
+    image: confluentinc/cp-kafka:${KAFKA_VERSION}
+    entrypoint: [ '/bin/sh', '-c' ]
+    depends_on:
+      - zookeeper
+      - kafka-broker1
+      - kafka-broker2
+      - kafka-manager
+      - schema-registry
+    command: |
+      "
+      # waiting for kafka will be ready
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --list
+      
+      echo -e 'Deleting topics'
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic order-creating-events --delete --if-exists
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic payment-status-events --delete --if-exists
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic order-paid-events --delete --if-exists
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic restaurant-approval-events --delete --if-exists
+      
+      echo -e 'Creating topics'
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic order-creating-events --replication-factor 2 --partitions 6
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic payment-status-events --replication-factor 2 --partitions 6
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic order-paid-events --replication-factor 2 --partitions 6
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic restaurant-approval-events --replication-factor 2 --partitions 6
+      
+      echo -e 'Created topics:'
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --list
+      "
+    networks:
+      bigos-network:
+networks:
+  bigos-network:
+    driver: bridge
