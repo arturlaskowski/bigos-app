@@ -21,6 +21,10 @@
         </dependency>
         <dependency>
             <groupId>com.bigos.app</groupId>
+            <artifactId>kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bigos.app</groupId>
             <artifactId>order-domain</artifactId>
         </dependency>
         <dependency>

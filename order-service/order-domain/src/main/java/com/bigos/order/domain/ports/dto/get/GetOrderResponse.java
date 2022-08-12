@@ -1,8 +1,7 @@
 package com.bigos.order.domain.ports.dto.get;
 
-import com.bigos.order.domain.model.OrderStatus;
+import com.bigos.common.domain.vo.OrderStatus;
 import lombok.Builder;
-import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;

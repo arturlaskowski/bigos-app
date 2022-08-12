@@ -1,10 +1,7 @@
 package com.bigos.order.domain.model;
 
 import com.bigos.common.domain.model.AggregateRoot;
-import com.bigos.common.domain.vo.CustomerId;
-import com.bigos.common.domain.vo.Money;
-import com.bigos.common.domain.vo.OrderId;
-import com.bigos.common.domain.vo.RestaurantId;
+import com.bigos.common.domain.vo.*;
 import com.bigos.order.domain.exception.OrderDomainException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +11,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import static com.bigos.order.domain.model.OrderStatus.PENDING;
+import static com.bigos.common.domain.vo.OrderStatus.PENDING;
 import static java.time.Instant.now;
 
 @AllArgsConstructor

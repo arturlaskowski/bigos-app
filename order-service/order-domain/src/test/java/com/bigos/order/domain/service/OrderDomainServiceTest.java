@@ -5,7 +5,7 @@ import com.bigos.order.domain.event.OrderCreatedEvent;
 import com.bigos.order.domain.event.OrderPaidEvent;
 import com.bigos.order.domain.exception.OrderDomainException;
 import com.bigos.order.domain.model.Order;
-import com.bigos.order.domain.model.OrderStatus;
+import com.bigos.common.domain.vo.OrderStatus;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

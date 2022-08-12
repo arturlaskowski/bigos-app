@@ -1,7 +1,8 @@
 package com.bigos.order.adapters.command;
 
-import com.bigos.order.domain.model.Order;
+import com.bigos.order.adapters.out.message.kafka.CreateOrderKafkaEventPublisher;
 import com.bigos.order.domain.event.OrderCreatedEvent;
+import com.bigos.order.domain.model.Order;
 import com.bigos.order.domain.ports.dto.create.CreateOrderCommand;
 import com.bigos.order.domain.ports.dto.create.CreateOrderResponse;
 import com.bigos.order.domain.ports.out.repository.OrderRepository;
@@ -17,11 +18,13 @@ public class OrderCreateCommandHandler {
     private final OrderCommandMapper orderMapper;
     private final OrderDomainService orderDomainService;
     private final OrderRepository orderRepository;
+    private final CreateOrderKafkaEventPublisher createOrderKafkaEventPublisher;
 
-    public OrderCreateCommandHandler(OrderCommandMapper orderCommandMapper, OrderDomainService orderDomainService, OrderRepository orderRepository) {
+    public OrderCreateCommandHandler(OrderCommandMapper orderCommandMapper, OrderDomainService orderDomainService, OrderRepository orderRepository, CreateOrderKafkaEventPublisher createOrderKafkaEventPublisher) {
         this.orderMapper = orderCommandMapper;
         this.orderDomainService = orderDomainService;
         this.orderRepository = orderRepository;
+        this.createOrderKafkaEventPublisher = createOrderKafkaEventPublisher;
     }
 
     @Transactional
@@ -31,6 +34,8 @@ public class OrderCreateCommandHandler {
         OrderCreatedEvent orderCreatedEvent = orderDomainService.create(order);
 
         orderRepository.save(order);
+
+        createOrderKafkaEventPublisher.publish(orderCreatedEvent);
 
         CreateOrderResponse createOrderResponse = orderMapper.orderToCreateOrderResponse(orderCreatedEvent.getOrder());
 

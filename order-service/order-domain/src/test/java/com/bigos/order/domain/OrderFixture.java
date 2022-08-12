@@ -5,7 +5,7 @@ import com.bigos.common.domain.vo.ProductId;
 import com.bigos.common.domain.vo.Quantity;
 import com.bigos.order.domain.model.BasketItem;
 import com.bigos.order.domain.model.Order;
-import com.bigos.order.domain.model.OrderStatus;
+import com.bigos.common.domain.vo.OrderStatus;
 import com.bigos.order.domain.model.Product;
 
 import java.math.BigDecimal;

@@ -4,7 +4,7 @@ import com.bigos.common.domain.vo.OrderId;
 import com.bigos.order.app.OrderServiceApplication;
 import com.bigos.order.domain.exception.OrderDomainException;
 import com.bigos.order.domain.model.Order;
-import com.bigos.order.domain.model.OrderStatus;
+import com.bigos.common.domain.vo.OrderStatus;
 import com.bigos.order.domain.ports.dto.create.BasketItemCreateDto;
 import com.bigos.order.domain.ports.dto.create.CreateOrderCommand;
 import com.bigos.order.domain.ports.dto.create.CreateOrderResponse;

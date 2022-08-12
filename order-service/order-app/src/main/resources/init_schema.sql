@@ -18,6 +18,7 @@ create table "order".orders
     restaurant_id    uuid           not null,
     price            numeric(10, 2) not null,
     status           order_status   not null,
+    creation_date    timestamp      not null,
     failure_messages varchar(200),
     constraint orders_pkey primary key (id)
 );
@@ -59,7 +60,7 @@ create table "order".order_address
 alter table "order".order_address
     add constraint fk_order_id
         foreign key (order_id)
-            references "order".orders (id)match simple
+            references "order".orders (id) match simple
             on update no action
             on delete cascade
         not valid;

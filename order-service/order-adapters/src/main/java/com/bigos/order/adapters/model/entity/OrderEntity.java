@@ -1,6 +1,6 @@
 package com.bigos.order.adapters.model.entity;
 
-import com.bigos.order.domain.model.OrderStatus;
+import com.bigos.common.domain.vo.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

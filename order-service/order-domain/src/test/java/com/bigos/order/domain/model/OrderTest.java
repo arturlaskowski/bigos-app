@@ -1,11 +1,11 @@
 package com.bigos.order.domain.model;
 
 
+import com.bigos.common.domain.vo.OrderStatus;
 import com.bigos.order.domain.exception.OrderDomainException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import static com.bigos.order.domain.OrderFixture.*;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

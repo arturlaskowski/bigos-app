@@ -62,10 +62,4 @@ class OrderProcessedTest {
 
     }
 
-    @Test
-    void sdds(){
-        System.out.println(UUID.randomUUID());
-        System.out.println(UUID.randomUUID());
-        System.out.println(UUID.randomUUID());
-    }
 }
