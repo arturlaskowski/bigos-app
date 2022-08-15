@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "payment-service")
 public class PaymentServiceConfigProperties {
-    private String orderCreatingEventsTopicName;
+    private String orderCreatedEventsTopicName;
+    private String orderCancellingEventsTopicName;
     private String paymentStatusEventsTopicName;
 }

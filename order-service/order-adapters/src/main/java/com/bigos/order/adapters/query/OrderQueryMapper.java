@@ -3,9 +3,9 @@ package com.bigos.order.adapters.query;
 import com.bigos.order.domain.model.BasketItem;
 import com.bigos.order.domain.model.Order;
 import com.bigos.order.domain.model.OrderAddress;
-import com.bigos.order.domain.ports.dto.get.BasketItemGetDto;
-import com.bigos.order.domain.ports.dto.get.GetOrderResponse;
-import com.bigos.order.domain.ports.dto.get.OrderAddressGetDto;
+import com.bigos.order.domain.ports.dto.order.get.BasketItemGetDto;
+import com.bigos.order.domain.ports.dto.order.get.GetOrderResponse;
+import com.bigos.order.domain.ports.dto.order.get.OrderAddressGetDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,8 +19,10 @@ class OrderQueryMapper {
                 .restaurantId(order.getRestaurantId().id())
                 .customerId(order.getCustomerId().id())
                 .price(order.getPrice().amount())
+                .status(order.getStatus())
                 .address(addressToOrderAddressDto(order.getDeliveryAddress()))
                 .items(basketItemToBasketItemsDto(order.getBasket()))
+                .failureMessages(order.getFailureMessages())
                 .build();
     }
 

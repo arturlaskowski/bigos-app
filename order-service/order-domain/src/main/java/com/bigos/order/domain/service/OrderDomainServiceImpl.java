@@ -34,15 +34,15 @@ public class OrderDomainServiceImpl implements OrderDomainService {
     }
 
     @Override
-    public OrderCancellingEvent startCancelling(Order order, String failureMessages) {
-        order.startCancelling(failureMessages);
+    public OrderCancellingEvent startCancelling(Order order, String failureMessage) {
+        order.startCancelling(failureMessage);
         log.info("Order with id: {} started canceling process", order.getId());
         return new OrderCancellingEvent(order, Instant.now());
     }
 
     @Override
-    public void cancelOrder(Order order) {
-        order.cancel();
+    public void cancelOrder(Order order,  String failureMessages) {
+        order.cancel(failureMessages);
         log.info("Order with id: {} was canceled", order.getId());
     }
 }

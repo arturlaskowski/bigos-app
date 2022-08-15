@@ -1,10 +1,8 @@
 package com.bigos.payment.adapters.payment.in.message.kafka;
 
 import com.bigos.infrastructure.kafka.config.cnosumer.KafkaConsumer;
-import com.bigos.infrastructure.kafka.config.serialization.MessageKafkaDto;
-import com.bigos.infrastructure.kafka.model.OrderEventDtoKafka;
-import com.bigos.infrastructure.kafka.model.OrderMessageDto;
-import com.bigos.payment.adapters.payment.in.message.kafka.mapper.PaymentMessagingDataMapper;
+import com.bigos.infrastructure.kafka.model.events.OrderCreatedEventDtoKafka;
+import com.bigos.payment.adapters.payment.in.message.kafka.mapper.InputMessagingKafkaDataMapper;
 import com.bigos.payment.domain.ports.in.message.PaymentMessageListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,44 +13,34 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.bigos.common.domain.vo.OrderStatus.CANCELLING;
 import static com.bigos.common.domain.vo.OrderStatus.PENDING;
 
 @Slf4j
 @Component
-public class OrderCreatedEventKafkaListener implements KafkaConsumer< OrderEventDtoKafka> {
+public class OrderCreatedEventKafkaListener implements KafkaConsumer<OrderCreatedEventDtoKafka> {
 
     private final PaymentMessageListener paymentMessageListener;
-    private final PaymentMessagingDataMapper paymentMessagingDataMapper;
+    private final InputMessagingKafkaDataMapper inputMessagingKafkaDataMapper;
 
-    public OrderCreatedEventKafkaListener(PaymentMessageListener paymentMessageListener, PaymentMessagingDataMapper paymentMessagingDataMapper) {
+    public OrderCreatedEventKafkaListener(PaymentMessageListener paymentMessageListener, InputMessagingKafkaDataMapper inputMessagingKafkaDataMapper) {
         this.paymentMessageListener = paymentMessageListener;
-        this.paymentMessagingDataMapper = paymentMessagingDataMapper;
+        this.inputMessagingKafkaDataMapper = inputMessagingKafkaDataMapper;
     }
 
     @Override
-    @KafkaListener(id = "${kafka-config.consumer.payment-consumer-group-id}",
-            topics = "${payment-service.order-creating-events-topic-name}")
-    public void receive(@Payload List<OrderEventDtoKafka> messages,
+    @KafkaListener(topics = "${payment-service.order-created-events-topic-name}")
+    public void receive(@Payload List<OrderCreatedEventDtoKafka> messages,
                         @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<String> keys,
                         @Header(KafkaHeaders.RECEIVED_PARTITION_ID) List<Integer> partitions,
                         @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
-        log.info("recived {} messages with keys:{}, partitions:{} and offsets: {}",
-                messages.size(),
-                keys.toString(),
-                partitions.toString(),
-                offsets.toString());
+        log.info("Received OrderCreatedEvents {} messages with keys:{}, partitions:{} and offsets: {}",
+                messages.size(), keys.toString(), partitions.toString(), offsets.toString());
 
         messages.forEach(orderEventDto -> {
             if (PENDING.name().equals(orderEventDto.getData().status())) {
                 log.info("Processing payment for order id: {}", orderEventDto.getDataId());
-                paymentMessageListener.makePayment(paymentMessagingDataMapper
+                paymentMessageListener.makePayment(inputMessagingKafkaDataMapper
                         .orderEventDtoToMakePaymentCommand(orderEventDto));
-
-            } else if (CANCELLING.name().equals(orderEventDto.getData().status())) {
-                log.info("Cancelling payment for order id: {}", orderEventDto.getDataId());
-                paymentMessageListener.cancelPayment(paymentMessagingDataMapper
-                        .orderEventDtoToCancelPaymentCommand(orderEventDto));
             }
         });
     }

@@ -14,10 +14,10 @@ drop table if exists "payment".payments cascade;
 create table "payment".payments
 (
     id           uuid           not null,
-    wallet_id    uuid           not null,
+    customer_id  uuid           not null,
     order_id     uuid           not null,
     price        numeric(10, 2) not null,
-    created_date timestamp      not null,
+    creation_date timestamp      not null,
     status       payment_status not null,
     constraint payments_pkey primary key (id)
 );

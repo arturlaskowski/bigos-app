@@ -1,7 +1,7 @@
 package com.bigos.payment.domain.model;
 
 import com.bigos.common.domain.vo.Money;
-import com.bigos.payment.domain.model.vo.PaymentStatus;
+import com.bigos.common.domain.vo.PaymentStatus;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ class PaymentTest {
 
         //then
         assertNotNull(payment.getId());
-        assertNotNull(payment.getCreatedDate());
+        assertNotNull(payment.getCreationDate());
     }
 
     @Test

@@ -9,11 +9,11 @@ import java.time.Instant;
 @Getter
 public class PaymentRejectedEvent extends PaymentEvent {
 
-    private final String failureMessage;
+    private final String failureMessages;
 
-    public PaymentRejectedEvent(Payment payment, String failureMessage) {
+    public PaymentRejectedEvent(Payment payment, String failureMessages) {
         super(payment, Instant.now());
-        this.failureMessage = failureMessage;
+        this.failureMessages = failureMessages;
     }
 
 }

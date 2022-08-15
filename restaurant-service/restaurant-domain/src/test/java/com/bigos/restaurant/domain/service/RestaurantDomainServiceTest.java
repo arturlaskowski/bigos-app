@@ -1,12 +1,12 @@
 package com.bigos.restaurant.domain.service;
 
+import com.bigos.common.domain.vo.OrderApprovalStatus;
 import com.bigos.common.domain.vo.RestaurantId;
-import com.bigos.restaurant.domain.event.OrderApprovedEvent;
+import com.bigos.restaurant.domain.event.OrderAcceptedEvent;
 import com.bigos.restaurant.domain.event.OrderProcessedEvent;
 import com.bigos.restaurant.domain.event.OrderRejectedEvent;
 import com.bigos.restaurant.domain.model.OrderProcessed;
 import com.bigos.restaurant.domain.model.Restaurant;
-import com.bigos.restaurant.domain.model.vo.OrderApprovalStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -29,8 +29,8 @@ class RestaurantDomainServiceTest {
         OrderProcessedEvent orderProcessedEvent = restaurantDomainService.verifyOrder(orderProcessed, restaurant);
         //then
         assertTrue(orderProcessed.getItems().stream().anyMatch(item -> item.getId() != null));
-        assertEquals(OrderApprovalStatus.APPROVED, orderProcessed.getApprovalStatus());
-        assertTrue(orderProcessedEvent instanceof OrderApprovedEvent);
+        assertEquals(OrderApprovalStatus.ACCEPTED, orderProcessed.getApprovalStatus());
+        assertTrue(orderProcessedEvent instanceof OrderAcceptedEvent);
     }
 
     @Test

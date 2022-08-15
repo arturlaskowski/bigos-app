@@ -17,6 +17,14 @@
     <dependencies>
         <dependency>
             <groupId>com.bigos.app</groupId>
+            <artifactId>common-adapters</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bigos.app</groupId>
+            <artifactId>kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bigos.app</groupId>
             <artifactId>restaurant-domain</artifactId>
         </dependency>
         <dependency>

@@ -30,7 +30,7 @@ class PaymentDomainServiceTest {
         PaymentEvent paymentEvent = paymentDomainService.makePayment(payment, wallet);
         //then
         assertNotNull(payment.getId());
-        assertNotNull(payment.getCreatedDate());
+        assertNotNull(payment.getCreationDate());
         assertTrue(payment.isCompleted());
         assertEquals(new Money(new BigDecimal("25.57")), wallet.getAmount());// 76.22 - 50.65 = 25.57
         assertTrue(paymentEvent instanceof PaymentCompletedEvent);
@@ -45,7 +45,7 @@ class PaymentDomainServiceTest {
         PaymentEvent paymentEvent = paymentDomainService.makePayment(payment, wallet);
         //then
         assertNotNull(payment.getId());
-        assertNotNull(payment.getCreatedDate());
+        assertNotNull(payment.getCreationDate());
         assertTrue(payment.isRejected());
         assertEquals(new Money(new BigDecimal("76.22")), wallet.getAmount());// the same
         assertTrue(paymentEvent instanceof PaymentRejectedEvent);
@@ -61,7 +61,7 @@ class PaymentDomainServiceTest {
         PaymentEvent paymentEvent = paymentDomainService.makePayment(payment, wallet);
         //then
         assertNotNull(payment.getId());
-        assertNotNull(payment.getCreatedDate());
+        assertNotNull(payment.getCreationDate());
         assertTrue(payment.isRejected());
         assertEquals(new Money(new BigDecimal("83.92")), wallet.getAmount());// the same
         assertTrue(paymentEvent instanceof PaymentRejectedEvent);

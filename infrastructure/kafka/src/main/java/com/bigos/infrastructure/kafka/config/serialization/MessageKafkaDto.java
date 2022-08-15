@@ -24,10 +24,13 @@ public class MessageKafkaDto<DTO extends Serializable> implements TypeDto, Seria
 
     private DTO data;
 
-    protected MessageKafkaDto(String dataId, Instant createdAt, DTO data) {
+    private String sagaId;
+
+    protected MessageKafkaDto(String dataId, Instant createdAt, DTO data, String sageId) {
         this.dataId = dataId;
         setCreatedAt(createdAt);
         this.data = data;
+        this.sagaId = sageId;
         this.type = this.getClass().getName();
     }
 
@@ -57,5 +60,9 @@ public class MessageKafkaDto<DTO extends Serializable> implements TypeDto, Seria
 
     public DTO getData() {
         return data;
+    }
+
+    public String getSagaId() {
+        return sagaId;
     }
 }

@@ -6,6 +6,8 @@ logging:
     com.bigos.app: DEBUG
 
 spring:
+  application:
+    name: order-service
   jpa:
     open-in-view: false
     show-sql: true
@@ -27,7 +29,6 @@ kafka-config:
     request-timeout-ms: 60000
     retry-count: 5
   consumer:
-    order-consumer-group-id: order-service
     batch-listener: true
     auto-startup: true
     concurrency-level: 3
@@ -40,7 +41,8 @@ kafka-config:
     poll-timeout-ms: 150
 
 order-service:
-  order-creating-events-topic-name: order-creating-events
-  payment-status-events-topic-name: payment-status-events
+  order-created-events-topic-name: order-created-events
   order-paid-events-topic-name: order-paid-events
+  order-cancelling-events-topic-name: order-cancelling-events
+  payment-status-events-topic-name: payment-status-events
   restaurant-approval-events-topic-name: restaurant-approval-events

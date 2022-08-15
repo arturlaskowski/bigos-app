@@ -50,10 +50,10 @@ class PaymentIntegrationTest {
         Payment payment = paymentRepository.getByOrderId(new OrderId(ORDER_UUID));
         Wallet wallet = walletRepository.getByCustomerId(new CustomerId(CUSTOMER_UUID));
 
-        assertNotNull(payment.getCreatedDate());
+        assertNotNull(payment.getCreationDate());
         assertTrue(payment.isCompleted());
         assertEquals(ORDER_UUID, payment.getOrderId().id());
-        assertEquals(wallet.getId(), payment.getWalletId());
+        assertEquals(wallet.getCustomerId(), payment.getCustomerId());
         assertEquals(new Money(PAYMENT_PRICE), payment.getPrice());
         assertEquals(new Money(new BigDecimal("250.00")).subtract(new Money(PAYMENT_PRICE)),
                 wallet.getAmount()); //before wallet has 250.00 amount - PaymentIntegrationTestSetUp.sql
@@ -74,10 +74,10 @@ class PaymentIntegrationTest {
         Payment payment = paymentRepository.getByOrderId(new OrderId(ORDER_UUID));
         Wallet wallet = walletRepository.getByCustomerId(new CustomerId(CUSTOMER_UUID));
 
-        assertNotNull(payment.getCreatedDate());
+        assertNotNull(payment.getCreationDate());
         assertTrue(payment.isCanceled());
         assertEquals(ORDER_UUID, payment.getOrderId().id());
-        assertEquals(wallet.getId(), payment.getWalletId());
+        assertEquals(wallet.getCustomerId(), payment.getCustomerId());
         assertEquals(new Money(PAYMENT_PRICE), payment.getPrice());
         assertEquals(new Money(new BigDecimal("250.00")),
                 wallet.getAmount()); //before make payment wallet has 250.00 amount - PaymentIntegrationTestSetUp.sql

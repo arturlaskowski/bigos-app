@@ -1,6 +1,6 @@
 package com.bigos.payment.adapters.payment.model.entity;
 
-import com.bigos.payment.domain.model.vo.PaymentStatus;
+import com.bigos.common.domain.vo.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,12 +24,12 @@ public class PaymentEntity {
 
     private UUID orderId;
 
-    private UUID walletId;
+    private UUID customerId;
 
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
-    private Instant createdDate;
+    private Instant creationDate;
 }

@@ -1,5 +1,6 @@
 package com.bigos.payment.adapters.payment.mapper;
 
+import com.bigos.common.domain.vo.CustomerId;
 import com.bigos.common.domain.vo.Money;
 import com.bigos.common.domain.vo.OrderId;
 import com.bigos.payment.domain.model.Payment;
@@ -12,10 +13,10 @@ import java.util.UUID;
 @Component
 public class PaymentMessageMapper {
 
-    public Payment completePaymentCommandToPayment(MakePaymentCommand makePaymentCommand, WalletId walletId) {
+    public Payment completePaymentCommandToPayment(MakePaymentCommand makePaymentCommand) {
         return Payment.builder()
                 .orderId(new OrderId(UUID.fromString(makePaymentCommand.getOrderId())))
-                .walletId(walletId)
+                .customerId(new CustomerId(UUID.fromString(makePaymentCommand.getCustomerId())))
                 .price(new Money(makePaymentCommand.getPrice()))
                 .build();
     }

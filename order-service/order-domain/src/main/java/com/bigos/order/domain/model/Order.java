@@ -8,10 +8,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.bigos.common.domain.vo.OrderStatus.PENDING;
+import static com.bigos.common.domain.vo.OrderStatus.*;
 import static java.time.Instant.now;
 
 @AllArgsConstructor
@@ -35,7 +36,7 @@ public class Order implements AggregateRoot {
 
     private Instant creationDate;
 
-    private String failureMessages;
+    private List<String> failureMessages;
 
     public void initialize() {
         id = new OrderId(UUID.randomUUID());
@@ -49,48 +50,49 @@ public class Order implements AggregateRoot {
     }
 
     public boolean isPaidStatus() {
-        return OrderStatus.PAID == status;
+        return PAID == status;
     }
 
     public boolean isApprovedStatus() {
-        return OrderStatus.APPROVED == status;
+        return APPROVED == status;
     }
 
     public boolean isCancellingStatus() {
-        return OrderStatus.CANCELLING == status;
+        return CANCELLING == status;
     }
 
     public boolean isCancelledStatus() {
-        return OrderStatus.CANCELLED == status;
+        return CANCELLED == status;
     }
 
     public void pay() {
-        if (status != PENDING) {
+        if (PENDING != status) {
             throw new OrderDomainException("The payment operation cannot be performed. Order is in incorrect state: " + status);
         }
-        status = OrderStatus.PAID;
+        status = PAID;
     }
 
     public void approve() {
-        if (status != OrderStatus.PAID) {
+        if (PAID != status) {
             throw new OrderDomainException("The approve operation cannot be performed. Order is in incorrect state: " + status);
         }
-        status = OrderStatus.APPROVED;
+        status = APPROVED;
     }
 
     public void startCancelling(String failureMessage) {
-        if (status != OrderStatus.PAID) {
+        if (PAID != status) {
             throw new OrderDomainException("The init cancel operation cannot be performed. Order is in incorrect state: " + status);
         }
-        status = OrderStatus.CANCELLING;
+        status = CANCELLING;
         updateFailureMessages(failureMessage);
     }
 
-    public void cancel() {
-        if (status != OrderStatus.CANCELLING) {
+    public void cancel(String failureMessage) {
+        if (!(CANCELLING == status || PENDING == status)) {
             throw new OrderDomainException("The cancel operation cannot be performed. Order is in incorrect state: " + status);
         }
-        status = OrderStatus.CANCELLED;
+        status = CANCELLED;
+        updateFailureMessages(failureMessage);
     }
 
     public void validatePrice() {
@@ -122,9 +124,12 @@ public class Order implements AggregateRoot {
         }
     }
 
-    private void updateFailureMessages(String message) {
+    public void updateFailureMessages(String message) {
+        if (failureMessages == null) {
+            failureMessages = new ArrayList<>();
+        }
         if (message != null) {
-            failureMessages = message;
+            failureMessages.add(message);
         }
     }
 

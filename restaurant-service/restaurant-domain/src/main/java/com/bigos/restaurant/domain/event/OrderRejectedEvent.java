@@ -8,11 +8,11 @@ import java.time.Instant;
 @Getter
 public class OrderRejectedEvent extends OrderProcessedEvent {
 
-    private final String failureMessage;
+    private final String failureMessages;
 
-    public OrderRejectedEvent(OrderProcessed orderProcessed, Instant createdAt, String failureMessage) {
+    public OrderRejectedEvent(OrderProcessed orderProcessed, Instant createdAt, String failureMessages) {
         super(orderProcessed, createdAt);
-        this.failureMessage = failureMessage;
+        this.failureMessages = failureMessages;
     }
 
 }

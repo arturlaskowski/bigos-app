@@ -2,17 +2,17 @@ package com.bigos.restaurant.domain.model;
 
 import com.bigos.common.domain.model.AggregateRoot;
 import com.bigos.common.domain.vo.Money;
+import com.bigos.common.domain.vo.OrderApprovalStatus;
 import com.bigos.common.domain.vo.OrderId;
 import com.bigos.common.domain.vo.RestaurantId;
 import com.bigos.restaurant.domain.exception.RestaurantDomainException;
-import com.bigos.restaurant.domain.model.vo.OrderApprovalStatus;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
 
-import static com.bigos.restaurant.domain.model.vo.OrderApprovalStatus.APPROVED;
-import static com.bigos.restaurant.domain.model.vo.OrderApprovalStatus.REJECTED;
+import static com.bigos.common.domain.vo.OrderApprovalStatus.ACCEPTED;
+import static com.bigos.common.domain.vo.OrderApprovalStatus.REJECTED;
 
 @Getter
 @Builder
@@ -43,11 +43,19 @@ public class OrderProcessed implements AggregateRoot {
         }
     }
 
-    public void approve() {
-        approvalStatus = APPROVED;
+    public void accept() {
+        approvalStatus = ACCEPTED;
     }
 
     public void reject() {
         approvalStatus = REJECTED;
+    }
+
+    public boolean isAccepted() {
+        return ACCEPTED.equals(approvalStatus);
+    }
+
+    public boolean isRejected() {
+        return REJECTED.equals(approvalStatus);
     }
 }

@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "order-service")
 public class OrderServiceConfigProperties {
-    private String orderCreatingEventsTopicName;
-    private String paymentStatusEventsTopicName;
+    private String orderCreatedEventsTopicName;
     private String orderPaidEventsTopicName;
+    private String paymentStatusEventsTopicName;
+    private String orderCancellingEventsTopicName;
     private String restaurantApprovalEventsTopicName;
 }

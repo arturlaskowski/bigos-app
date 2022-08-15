@@ -5,10 +5,10 @@ import com.bigos.order.domain.model.BasketItem;
 import com.bigos.order.domain.model.Order;
 import com.bigos.order.domain.model.OrderAddress;
 import com.bigos.order.domain.model.Product;
-import com.bigos.order.domain.ports.dto.create.BasketItemCreateDto;
-import com.bigos.order.domain.ports.dto.create.CreateOrderCommand;
-import com.bigos.order.domain.ports.dto.create.CreateOrderResponse;
-import com.bigos.order.domain.ports.dto.create.OrderAddressCreateDto;
+import com.bigos.order.domain.ports.dto.order.create.BasketItemCreateDto;
+import com.bigos.order.domain.ports.dto.order.create.CreateOrderCommand;
+import com.bigos.order.domain.ports.dto.order.create.CreateOrderResponse;
+import com.bigos.order.domain.ports.dto.order.create.OrderAddressCreateDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

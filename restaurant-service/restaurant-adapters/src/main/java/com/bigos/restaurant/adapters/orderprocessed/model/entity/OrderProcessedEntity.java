@@ -1,6 +1,6 @@
 package com.bigos.restaurant.adapters.orderprocessed.model.entity;
 
-import com.bigos.restaurant.domain.model.vo.OrderApprovalStatus;
+import com.bigos.common.domain.vo.OrderApprovalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

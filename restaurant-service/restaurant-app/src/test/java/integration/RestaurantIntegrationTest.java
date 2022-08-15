@@ -1,13 +1,13 @@
 package integration;
 
+import com.bigos.common.domain.vo.OrderApprovalStatus;
 import com.bigos.common.domain.vo.OrderId;
 import com.bigos.restaurant.adapters.restaurant.exception.RestaurantNotFoundException;
 import com.bigos.restaurant.app.RestaurantServiceApplication;
 import com.bigos.restaurant.domain.model.OrderProcessed;
-import com.bigos.restaurant.domain.model.vo.OrderApprovalStatus;
 import com.bigos.restaurant.domain.ports.dto.OrderItemDto;
 import com.bigos.restaurant.domain.ports.dto.OrderPaidEvent;
-import com.bigos.restaurant.domain.ports.in.message.OrderApprovalListener;
+import com.bigos.restaurant.domain.ports.in.message.OrderPaidListener;
 import com.bigos.restaurant.domain.ports.out.repository.OrderProcessedRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ class RestaurantIntegrationTest {
     private static final String RESTAURANT_UNAVAILABLE_ID = "f16b42f7-6913-4a3f-9c71-fbf724e440b8";
 
     @Autowired
-    private OrderApprovalListener orderApprovalListener;
+    private OrderPaidListener orderPaidListener;
 
     @Autowired
     private OrderProcessedRepository orderProcessedRepository;
@@ -42,12 +42,12 @@ class RestaurantIntegrationTest {
         //given
         OrderPaidEvent orderPaidEvent = aOrderPaidEvent();
         //when
-        orderApprovalListener.approveOrder(orderPaidEvent);
+        orderPaidListener.acceptOrder(orderPaidEvent);
         //then
         OrderProcessed orderProcessed = orderProcessedRepository.findById(new OrderId(UUID.fromString(ORDER_ID))).get();
         assertEquals(UUID.fromString(RESTAURANT_AVAILABLE_ID), orderProcessed.getRestaurantId().id());
         assertEquals(new BigDecimal("250.00"), orderProcessed.getPrice().amount());
-        assertEquals(OrderApprovalStatus.APPROVED, orderProcessed.getApprovalStatus());
+        assertEquals(OrderApprovalStatus.ACCEPTED, orderProcessed.getApprovalStatus());
     }
 
     @Test
@@ -56,7 +56,7 @@ class RestaurantIntegrationTest {
         OrderPaidEvent orderPaidEvent = aOrderPaidEventWithNotExistingRestaurant();
         //expected
         assertThatExceptionOfType(RestaurantNotFoundException.class)
-                .isThrownBy(() -> orderApprovalListener.approveOrder(orderPaidEvent));
+                .isThrownBy(() -> orderPaidListener.acceptOrder(orderPaidEvent));
     }
 
     @Test
@@ -64,7 +64,7 @@ class RestaurantIntegrationTest {
         //given
         OrderPaidEvent orderPaidEvent = aOrderPaidEventWithUnavailableRestaurant();
         //when
-        orderApprovalListener.approveOrder(orderPaidEvent);
+        orderPaidListener.acceptOrder(orderPaidEvent);
         //then
         OrderProcessed orderProcessed = orderProcessedRepository.findById(new OrderId(UUID.fromString(ORDER_ID))).get();
         assertEquals(UUID.fromString(RESTAURANT_UNAVAILABLE_ID), orderProcessed.getRestaurantId().id());
@@ -77,7 +77,7 @@ class RestaurantIntegrationTest {
         //given
         OrderPaidEvent orderPaidEvent = aOrderPaidEventWithWithWrongAmount();
         //when
-        orderApprovalListener.approveOrder(orderPaidEvent);
+        orderPaidListener.acceptOrder(orderPaidEvent);
         //then
         OrderProcessed orderProcessed = orderProcessedRepository.findById(new OrderId(UUID.fromString(ORDER_ID))).get();
         assertEquals(new BigDecimal("240.00"), orderProcessed.getPrice().amount());

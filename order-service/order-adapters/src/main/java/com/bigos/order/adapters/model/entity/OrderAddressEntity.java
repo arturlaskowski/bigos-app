@@ -1,9 +1,6 @@
 package com.bigos.order.adapters.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -30,10 +27,8 @@ public class OrderAddressEntity {
 
     private String houseNo;
 
-    @Column(name = "order_id")
-    private UUID orderId;
-
     @OneToOne
-    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    @JoinColumn(name = "order_id")
+    @Setter
     private OrderEntity order;
 }

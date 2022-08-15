@@ -99,7 +99,7 @@ class OrderDomainServiceTest {
         //given
         Order order = aOrder(OrderStatus.CANCELLING, new BigDecimal(20), aBasketItem(new BigDecimal(10), 2, new BigDecimal(20)));
         //when
-        orderDomainService.cancelOrder(order);
+        orderDomainService.cancelOrder(order, "");
         //then
         assertTrue(order.isCancelledStatus());
     }

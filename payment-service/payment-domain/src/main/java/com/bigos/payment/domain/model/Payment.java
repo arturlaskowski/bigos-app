@@ -1,19 +1,19 @@
 package com.bigos.payment.domain.model;
 
 import com.bigos.common.domain.model.AggregateRoot;
+import com.bigos.common.domain.vo.CustomerId;
 import com.bigos.common.domain.vo.Money;
 import com.bigos.common.domain.vo.OrderId;
+import com.bigos.common.domain.vo.PaymentStatus;
 import com.bigos.payment.domain.exception.PaymentDomainException;
 import com.bigos.payment.domain.model.vo.PaymentId;
-import com.bigos.payment.domain.model.vo.PaymentStatus;
-import com.bigos.payment.domain.model.vo.WalletId;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.Instant;
 import java.util.UUID;
 
-import static com.bigos.payment.domain.model.vo.PaymentStatus.*;
+import static com.bigos.common.domain.vo.PaymentStatus.*;
 
 @Builder
 @Getter
@@ -23,17 +23,17 @@ public class Payment implements AggregateRoot {
 
     private OrderId orderId;
 
-    private WalletId walletId;
+    private CustomerId customerId;
 
     private Money price;
 
     private PaymentStatus status;
 
-    private Instant createdDate;
+    private Instant creationDate;
 
     public void initialize() {
         id = new PaymentId(UUID.randomUUID());
-        createdDate = Instant.now();
+        creationDate = Instant.now();
     }
 
     public void validatePaymentPrice() {

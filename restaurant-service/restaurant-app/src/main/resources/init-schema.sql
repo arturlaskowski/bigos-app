@@ -6,7 +6,7 @@ create extension if not exists "uuid-ossp";
 
 drop type if exists approval_status cascade;
 
-create type approval_status as enum ('APPROVED', 'REJECTED');
+create type approval_status as enum ('ACCEPTED', 'REJECTED');
 create cast (character varying as approval_status) with inout as implicit;
 
 drop table if exists "restaurant".restaurants cascade;

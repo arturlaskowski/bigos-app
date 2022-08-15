@@ -2,10 +2,10 @@ package com.bigos.order.adapters;
 
 import com.bigos.order.adapters.command.OrderCreateCommandHandler;
 import com.bigos.order.adapters.query.GetOrderQueryHandler;
-import com.bigos.order.domain.ports.dto.create.CreateOrderCommand;
-import com.bigos.order.domain.ports.dto.create.CreateOrderResponse;
-import com.bigos.order.domain.ports.dto.get.GetOrderQuery;
-import com.bigos.order.domain.ports.dto.get.GetOrderResponse;
+import com.bigos.order.domain.ports.dto.order.create.CreateOrderCommand;
+import com.bigos.order.domain.ports.dto.order.create.CreateOrderResponse;
+import com.bigos.order.domain.ports.dto.order.get.GetOrderQuery;
+import com.bigos.order.domain.ports.dto.order.get.GetOrderResponse;
 import com.bigos.order.domain.ports.in.service.OrderApplicationService;
 import org.springframework.stereotype.Service;
 

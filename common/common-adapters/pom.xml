@@ -14,4 +14,10 @@
     <properties>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.bigos.app</groupId>
+            <artifactId>common-domain</artifactId>
+        </dependency>
+    </dependencies>
 </project>

@@ -119,13 +119,15 @@ services:
       kafka-topics --bootstrap-server kafka-broker-1:9092 --list
       
       echo -e 'Deleting topics'
-      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic order-creating-events --delete --if-exists
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic order-created-events --delete --if-exists
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --topic order-cancelling-events --delete --if-exists
       kafka-topics --bootstrap-server kafka-broker-1:9092 --topic payment-status-events --delete --if-exists
       kafka-topics --bootstrap-server kafka-broker-1:9092 --topic order-paid-events --delete --if-exists
       kafka-topics --bootstrap-server kafka-broker-1:9092 --topic restaurant-approval-events --delete --if-exists
       
       echo -e 'Creating topics'
-      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic order-creating-events --replication-factor 2 --partitions 6
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic order-created-events --replication-factor 2 --partitions 6
+      kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic order-cancelling-events --replication-factor 2 --partitions 6
       kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic payment-status-events --replication-factor 2 --partitions 6
       kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic order-paid-events --replication-factor 2 --partitions 6
       kafka-topics --bootstrap-server kafka-broker-1:9092 --create --if-not-exists --topic restaurant-approval-events --replication-factor 2 --partitions 6

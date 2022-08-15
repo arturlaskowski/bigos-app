@@ -3,8 +3,8 @@ package com.bigos.order.adapters.query;
 
 import com.bigos.common.domain.vo.OrderId;
 import com.bigos.order.domain.model.Order;
-import com.bigos.order.domain.ports.dto.get.GetOrderQuery;
-import com.bigos.order.domain.ports.dto.get.GetOrderResponse;
+import com.bigos.order.domain.ports.dto.order.get.GetOrderQuery;
+import com.bigos.order.domain.ports.dto.order.get.GetOrderResponse;
 import com.bigos.order.domain.ports.out.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

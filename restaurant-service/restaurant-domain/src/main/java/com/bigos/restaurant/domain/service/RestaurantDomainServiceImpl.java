@@ -1,6 +1,6 @@
 package com.bigos.restaurant.domain.service;
 
-import com.bigos.restaurant.domain.event.OrderApprovedEvent;
+import com.bigos.restaurant.domain.event.OrderAcceptedEvent;
 import com.bigos.restaurant.domain.event.OrderProcessedEvent;
 import com.bigos.restaurant.domain.event.OrderRejectedEvent;
 import com.bigos.restaurant.domain.exception.RestaurantDomainException;
@@ -19,10 +19,10 @@ public class RestaurantDomainServiceImpl implements RestaurantDomainService {
             orderProcessed.initialize();
             restaurant.validate();
             orderProcessed.validate();
-            orderProcessed.approve();
+            orderProcessed.accept();
             log.info("Order with id: {} is approved.", orderProcessed.getId().id());
 
-            return new OrderApprovedEvent(orderProcessed, Instant.now());
+            return new OrderAcceptedEvent(orderProcessed, Instant.now());
         } catch (RestaurantDomainException e) {
             orderProcessed.reject();
             log.info("Order with id: {} is rejected. Reason: {}", orderProcessed.getId().id(), e.getMessage());

@@ -1,10 +1,7 @@
 package com.bigos.restaurant.domain.model;
 
 import com.bigos.restaurant.domain.exception.RestaurantDomainException;
-import com.bigos.restaurant.domain.model.vo.OrderApprovalStatus;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static com.bigos.restaurant.domain.OrderProcessedFixture.aCorrectOrderProcessed;
 import static com.bigos.restaurant.domain.OrderProcessedFixture.aOrderProcessedWithWrongAmount;
@@ -27,9 +24,9 @@ class OrderProcessedTest {
         //given
         OrderProcessed orderProcessed = aCorrectOrderProcessed();
         //when
-        orderProcessed.approve();
+        orderProcessed.accept();
         //then
-        assertEquals(OrderApprovalStatus.APPROVED, orderProcessed.getApprovalStatus());
+        assertEquals(OrderApprovalStatus.ACCEPTED, orderProcessed.getApprovalStatus());
     }
 
     @Test

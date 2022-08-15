@@ -6,6 +6,7 @@ import com.bigos.infrastructure.kafka.config.serialization.TypeDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -28,10 +29,14 @@ public class KafkaConsumerConfig {
         this.kafkaConfigProperties = kafkaConfigProperties;
     }
 
+    @Value("${spring.application.name}")
+    protected String serviceName;
+
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfigProperties.getBootstrapServers());
+        props.put(GROUP_ID_CONFIG, this.serviceName);
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, kafkaConfigProperties.getConsumer().getSessionTimeoutMs());
         props.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, kafkaConfigProperties.getConsumer().getHeartbeatIntervalMs());
         props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, kafkaConfigProperties.getConsumer().getMaxPollIntervalMs());

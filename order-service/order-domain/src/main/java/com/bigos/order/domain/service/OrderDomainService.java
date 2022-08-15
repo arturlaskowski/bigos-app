@@ -13,7 +13,7 @@ public interface OrderDomainService {
 
     void approve(Order order);
 
-    OrderCancellingEvent startCancelling(Order order, String failureMessages);
+    OrderCancellingEvent startCancelling(Order order, String failureMessage);
 
-    void cancelOrder(Order order);
+    void cancelOrder(Order order, String failureMessage);
 }

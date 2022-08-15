@@ -96,10 +96,9 @@ class OrderTest {
     @Test
     void cannotMakeCancelOperationWhenOrderIsNotInCancellingState() {
         //expect
-        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() -> aOrder(OrderStatus.PENDING).cancel());
-        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() -> aOrder(OrderStatus.PAID).cancel());
-        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() -> aOrder(OrderStatus.APPROVED).cancel());
-        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() -> aOrder(OrderStatus.CANCELLED).cancel());
+        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() -> aOrder(OrderStatus.PAID).cancel(""));
+        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() -> aOrder(OrderStatus.APPROVED).cancel(""));
+        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() -> aOrder(OrderStatus.CANCELLED).cancel(""));
     }
 
     @Test
@@ -108,7 +107,7 @@ class OrderTest {
         Order order = aOrder(OrderStatus.CANCELLING);
 
         //when
-        order.cancel();
+        order.cancel("");
 
         //then
         assertTrue(order.isCancelledStatus());
@@ -123,7 +122,13 @@ class OrderTest {
         order.startCancelling("Restauration reject order");
 
         //then
-        assertEquals("Restauration reject order", order.getFailureMessages());
+        assertEquals("Restauration reject order", order.getFailureMessages().get(0));
+
+        //when
+        order.cancel("Payment rejected");
+
+        //then
+        assertEquals("Payment rejected", order.getFailureMessages().get(1));
     }
 
     @Test
