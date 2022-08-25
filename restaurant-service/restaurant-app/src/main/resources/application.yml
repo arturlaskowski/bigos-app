@@ -42,3 +42,5 @@ kafka-config:
 restaurant-service:
   order-paid-events-topic-name: order-paid-events
   restaurant-approval-events-topic-name: restaurant-approval-events
+  outbox-scheduler-fixed-rate: 15000
+  outbox-scheduler-initial-delay: 60000

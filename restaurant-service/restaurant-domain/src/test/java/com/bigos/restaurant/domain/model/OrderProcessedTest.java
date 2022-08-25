@@ -1,5 +1,6 @@
 package com.bigos.restaurant.domain.model;
 
+import com.bigos.common.domain.vo.OrderApprovalStatus;
 import com.bigos.restaurant.domain.exception.RestaurantDomainException;
 import org.junit.jupiter.api.Test;
 

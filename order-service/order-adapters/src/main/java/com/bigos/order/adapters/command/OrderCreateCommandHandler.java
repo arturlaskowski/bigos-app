@@ -1,10 +1,13 @@
 package com.bigos.order.adapters.command;
 
-import com.bigos.order.adapters.out.message.kafka.CreateOrderKafkaEventPublisher;
+import com.bigos.order.adapters.command.mapper.OrderCommandMapper;
+import com.bigos.order.adapters.outbox.dto.mapper.OrderOutboxMapper;
 import com.bigos.order.domain.event.OrderCreatedEvent;
 import com.bigos.order.domain.model.Order;
 import com.bigos.order.domain.ports.dto.order.create.CreateOrderCommand;
 import com.bigos.order.domain.ports.dto.order.create.CreateOrderResponse;
+import com.bigos.order.domain.ports.dto.outbox.OrderCreatedOutboxMessage;
+import com.bigos.order.domain.ports.out.repository.OrderOutboxRepository;
 import com.bigos.order.domain.ports.out.repository.OrderRepository;
 import com.bigos.order.domain.service.OrderDomainService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +21,20 @@ public class OrderCreateCommandHandler {
     private final OrderCommandMapper orderMapper;
     private final OrderDomainService orderDomainService;
     private final OrderRepository orderRepository;
-    private final CreateOrderKafkaEventPublisher createOrderKafkaEventPublisher;
+    private final OrderOutboxMapper orderOutboxMapper;
+    private final OrderOutboxRepository outboxRepository;
 
-    public OrderCreateCommandHandler(OrderCommandMapper orderCommandMapper, OrderDomainService orderDomainService, OrderRepository orderRepository, CreateOrderKafkaEventPublisher createOrderKafkaEventPublisher) {
-        this.orderMapper = orderCommandMapper;
+    public OrderCreateCommandHandler(OrderCommandMapper orderMapper,
+                                     OrderDomainService orderDomainService,
+                                     OrderRepository orderRepository,
+                                     OrderOutboxMapper orderOutboxMapper, OrderOutboxRepository outboxRepository) {
+        this.orderMapper = orderMapper;
         this.orderDomainService = orderDomainService;
         this.orderRepository = orderRepository;
-        this.createOrderKafkaEventPublisher = createOrderKafkaEventPublisher;
+        this.orderOutboxMapper = orderOutboxMapper;
+        this.outboxRepository = outboxRepository;
     }
+
 
     @Transactional
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
@@ -35,11 +44,19 @@ public class OrderCreateCommandHandler {
 
         orderRepository.save(order);
 
-        createOrderKafkaEventPublisher.publish(orderCreatedEvent);
-
         CreateOrderResponse createOrderResponse = orderMapper.orderToCreateOrderResponse(orderCreatedEvent.getOrder());
+
+        saveOrderCreatedOutboxMessage(orderCreatedEvent);
 
         log.info("Order created id: {}", orderCreatedEvent.getOrder().getId().id());
         return createOrderResponse;
     }
+
+    private void saveOrderCreatedOutboxMessage(OrderCreatedEvent orderCreatedEvent) {
+        OrderCreatedOutboxMessage orderCreatedOutboxMessage =
+                orderOutboxMapper.orderCreatedEventToOrderCreatedOutboxMessage(orderCreatedEvent);
+
+        outboxRepository.save(orderCreatedOutboxMessage);
+    }
+
 }

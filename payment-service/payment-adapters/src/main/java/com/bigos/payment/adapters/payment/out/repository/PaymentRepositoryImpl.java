@@ -1,9 +1,9 @@
 package com.bigos.payment.adapters.payment.out.repository;
 
 import com.bigos.common.domain.vo.OrderId;
+import com.bigos.payment.adapters.payment.exception.PaymentNotFoundException;
 import com.bigos.payment.adapters.payment.model.entity.PaymentEntity;
 import com.bigos.payment.adapters.payment.model.mapper.PaymentEntityMapper;
-import com.bigos.payment.adapters.wallet.exception.WalletNotFoundException;
 import com.bigos.payment.domain.model.Payment;
 import com.bigos.payment.domain.ports.out.repository.PaymentRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -33,7 +33,7 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     public Payment getByOrderId(OrderId orderId) {
         return paymentRepositoryJpa.findByOrderId(orderId.id())
                 .map(paymentEntityMapper::paymentEntityToPayment)
-                .orElseThrow(() -> new WalletNotFoundException("Could not find payment with orderId: " + orderId.id()));
+                .orElseThrow(() -> new PaymentNotFoundException("Could not find payment with orderId: " + orderId.id()));
     }
 }
 

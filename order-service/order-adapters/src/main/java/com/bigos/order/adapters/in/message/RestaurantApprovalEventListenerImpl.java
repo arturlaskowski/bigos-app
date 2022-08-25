@@ -28,7 +28,6 @@ public class RestaurantApprovalEventListenerImpl implements RestaurantApprovalEv
     public void orderRejected(RestaurantApprovalEvent restaurantApprovalEvent) {
         orderApprovalSaga.rollback(restaurantApprovalEvent);
         log.info("Order with id: {} is start cancelling, failure messages: {}",
-                restaurantApprovalEvent.orderId(),
-                restaurantApprovalEvent.failureMessages());
+                restaurantApprovalEvent.orderId(), restaurantApprovalEvent.failureMessages());
     }
 }

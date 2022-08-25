@@ -89,7 +89,7 @@ class OrderDomainServiceTest {
         OrderCancellingEvent orderCancellingEvent = orderDomainService.startCancelling(order, "Restauration not active");
         //then
         assertTrue(order.isCancellingStatus());
-        assertEquals("Restauration not active", order.getFailureMessages());
+        assertEquals("Restauration not active", order.getFailureMessages().get(0));
         assertNotNull(orderCancellingEvent.getCreatedAt());
         assertNotNull(orderCancellingEvent.getOrder());
     }

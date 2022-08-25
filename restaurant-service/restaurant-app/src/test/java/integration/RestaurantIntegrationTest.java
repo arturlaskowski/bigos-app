@@ -7,7 +7,7 @@ import com.bigos.restaurant.app.RestaurantServiceApplication;
 import com.bigos.restaurant.domain.model.OrderProcessed;
 import com.bigos.restaurant.domain.ports.dto.OrderItemDto;
 import com.bigos.restaurant.domain.ports.dto.OrderPaidEvent;
-import com.bigos.restaurant.domain.ports.in.message.OrderPaidListener;
+import com.bigos.restaurant.domain.ports.in.message.OrderPaidEventListener;
 import com.bigos.restaurant.domain.ports.out.repository.OrderProcessedRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ class RestaurantIntegrationTest {
     private static final String RESTAURANT_UNAVAILABLE_ID = "f16b42f7-6913-4a3f-9c71-fbf724e440b8";
 
     @Autowired
-    private OrderPaidListener orderPaidListener;
+    private OrderPaidEventListener orderPaidEventListener;
 
     @Autowired
     private OrderProcessedRepository orderProcessedRepository;
@@ -42,7 +42,7 @@ class RestaurantIntegrationTest {
         //given
         OrderPaidEvent orderPaidEvent = aOrderPaidEvent();
         //when
-        orderPaidListener.acceptOrder(orderPaidEvent);
+        orderPaidEventListener.acceptOrder(orderPaidEvent);
         //then
         OrderProcessed orderProcessed = orderProcessedRepository.findById(new OrderId(UUID.fromString(ORDER_ID))).get();
         assertEquals(UUID.fromString(RESTAURANT_AVAILABLE_ID), orderProcessed.getRestaurantId().id());
@@ -56,7 +56,7 @@ class RestaurantIntegrationTest {
         OrderPaidEvent orderPaidEvent = aOrderPaidEventWithNotExistingRestaurant();
         //expected
         assertThatExceptionOfType(RestaurantNotFoundException.class)
-                .isThrownBy(() -> orderPaidListener.acceptOrder(orderPaidEvent));
+                .isThrownBy(() -> orderPaidEventListener.acceptOrder(orderPaidEvent));
     }
 
     @Test
@@ -64,7 +64,7 @@ class RestaurantIntegrationTest {
         //given
         OrderPaidEvent orderPaidEvent = aOrderPaidEventWithUnavailableRestaurant();
         //when
-        orderPaidListener.acceptOrder(orderPaidEvent);
+        orderPaidEventListener.acceptOrder(orderPaidEvent);
         //then
         OrderProcessed orderProcessed = orderProcessedRepository.findById(new OrderId(UUID.fromString(ORDER_ID))).get();
         assertEquals(UUID.fromString(RESTAURANT_UNAVAILABLE_ID), orderProcessed.getRestaurantId().id());
@@ -77,7 +77,7 @@ class RestaurantIntegrationTest {
         //given
         OrderPaidEvent orderPaidEvent = aOrderPaidEventWithWithWrongAmount();
         //when
-        orderPaidListener.acceptOrder(orderPaidEvent);
+        orderPaidEventListener.acceptOrder(orderPaidEvent);
         //then
         OrderProcessed orderProcessed = orderProcessedRepository.findById(new OrderId(UUID.fromString(ORDER_ID))).get();
         assertEquals(new BigDecimal("240.00"), orderProcessed.getPrice().amount());
@@ -86,21 +86,49 @@ class RestaurantIntegrationTest {
 
     private static OrderPaidEvent aOrderPaidEvent() {
         List<OrderItemDto> orderItems = List.of(new OrderItemDto(UUID.randomUUID().toString(), new BigDecimal("50.00"), 5));
-        return new OrderPaidEvent(ORDER_ID, RESTAURANT_AVAILABLE_ID, new BigDecimal("250.00"), orderItems, "PAID");
+        return OrderPaidEvent.builder()
+                .orderId(ORDER_ID)
+                .restaurantId(RESTAURANT_AVAILABLE_ID)
+                .sageId(UUID.randomUUID().toString())
+                .price(new BigDecimal("250.00"))
+                .orderItems(orderItems)
+                .status("PAID")
+                .build();
     }
 
     private static OrderPaidEvent aOrderPaidEventWithNotExistingRestaurant() {
         List<OrderItemDto> orderItems = List.of(new OrderItemDto(UUID.randomUUID().toString(), new BigDecimal("50.00"), 5));
-        return new OrderPaidEvent(ORDER_ID, UUID.randomUUID().toString(), new BigDecimal("250.00"), orderItems, "PAID");
+        return OrderPaidEvent.builder()
+                .orderId(ORDER_ID)
+                .restaurantId(UUID.randomUUID().toString())
+                .sageId(UUID.randomUUID().toString())
+                .price(new BigDecimal("250.00"))
+                .orderItems(orderItems)
+                .status("PAID")
+                .build();
     }
 
     private static OrderPaidEvent aOrderPaidEventWithUnavailableRestaurant() {
         List<OrderItemDto> orderItems = List.of(new OrderItemDto(UUID.randomUUID().toString(), new BigDecimal("50.00"), 5));
-        return new OrderPaidEvent(ORDER_ID, RESTAURANT_UNAVAILABLE_ID, new BigDecimal("250.00"), orderItems, "PAID");
+        return OrderPaidEvent.builder()
+                .orderId(ORDER_ID)
+                .restaurantId(RESTAURANT_UNAVAILABLE_ID)
+                .sageId(UUID.randomUUID().toString())
+                .price(new BigDecimal("250.00"))
+                .orderItems(orderItems)
+                .status("PAID")
+                .build();
     }
 
     private static OrderPaidEvent aOrderPaidEventWithWithWrongAmount() {
         List<OrderItemDto> orderItems = List.of(new OrderItemDto(UUID.randomUUID().toString(), new BigDecimal("50.00"), 5));
-        return new OrderPaidEvent(ORDER_ID, RESTAURANT_AVAILABLE_ID, new BigDecimal("240.00"), orderItems, "PAID");
+        return OrderPaidEvent.builder()
+                .orderId(ORDER_ID)
+                .restaurantId(RESTAURANT_AVAILABLE_ID)
+                .sageId(UUID.randomUUID().toString())
+                .price(new BigDecimal("240.00"))
+                .orderItems(orderItems)
+                .status("PAID")
+                .build();
     }
 }

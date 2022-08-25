@@ -5,7 +5,6 @@ create schema "order";
 create extension if not exists "uuid-ossp";
 
 drop type if exists order_status cascade;
-
 create type order_status as enum ('PENDING', 'PAID', 'APPROVED', 'CANCELLED', 'CANCELLING');
 create cast (character varying as order_status) with inout as implicit;
 
@@ -64,3 +63,27 @@ alter table "order".order_address
             on update no action
             on delete cascade
         not valid;
+
+drop table if exists "order".outbox cascade;
+
+create table "order".order_outbox
+(
+    id             uuid         not null,
+    saga_id        uuid         not null,
+    created_date   timestamp    not null,
+    send_date      timestamp,
+    processed_date timestamp,
+    aggregate_id   uuid         not null,
+    aggregate_name varchar(50)  not null,
+    message_type   varchar(100) not null,
+    saga_status    varchar(50)  not null,
+    outbox_status  varchar(50)  not null,
+    payload        jsonb        not null,
+    payload_type   varchar(200) not null,
+    version        integer      not null,
+    constraint outbox_pkey primary key (id)
+);
+
+create index "order_outbox_saga_status"
+    on "order".order_outbox
+        (message_type, outbox_status, saga_status);

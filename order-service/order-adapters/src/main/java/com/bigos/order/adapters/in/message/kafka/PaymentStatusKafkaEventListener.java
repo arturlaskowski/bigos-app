@@ -3,10 +3,12 @@ package com.bigos.order.adapters.in.message.kafka;
 import com.bigos.common.domain.vo.PaymentStatus;
 import com.bigos.infrastructure.kafka.config.cnosumer.KafkaConsumer;
 import com.bigos.infrastructure.kafka.model.events.PaymentStatusEventDtoKafka;
+import com.bigos.order.adapters.exception.OrderNotFoundException;
 import com.bigos.order.adapters.in.message.kafka.mapper.InputMessagingKafkaDataMapper;
 import com.bigos.order.domain.ports.dto.payment.PaymentStatusEvent;
 import com.bigos.order.domain.ports.in.message.PaymentStatusEventListener;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -37,13 +39,20 @@ public class PaymentStatusKafkaEventListener implements KafkaConsumer<PaymentSta
                 messages.size(), keys.toString(), partitions.toString(), offsets.toString());
 
         messages.forEach(paymentKafkaDto -> {
-            PaymentStatusEvent paymentStatusEvent = mapper.paymentStatusEventDtoKafkaToPaymentStatusEvent(paymentKafkaDto);
-            if (PaymentStatus.COMPLETED == paymentStatusEvent.paymentStatus()) {
-                paymentStatusEventListener.paymentCompleted(paymentStatusEvent);
+            String orderId = paymentKafkaDto.getData().orderId();
+            try {
+                PaymentStatusEvent paymentStatusEvent = mapper.paymentStatusEventDtoKafkaToPaymentStatusEvent(paymentKafkaDto);
+                if (PaymentStatus.COMPLETED == paymentStatusEvent.paymentStatus()) {
+                    paymentStatusEventListener.paymentCompleted(paymentStatusEvent);
 
-            } else if (PaymentStatus.CANCELLED == paymentStatusEvent.paymentStatus() ||
-                    PaymentStatus.REJECTED == paymentStatusEvent.paymentStatus()) {
-                paymentStatusEventListener.paymentCancelled(paymentStatusEvent);
+                } else if (PaymentStatus.CANCELLED == paymentStatusEvent.paymentStatus() ||
+                        PaymentStatus.REJECTED == paymentStatusEvent.paymentStatus()) {
+                    paymentStatusEventListener.paymentCancelled(paymentStatusEvent);
+                }
+            } catch (OptimisticLockingFailureException e) {
+                log.error("Optimistic locking exception in PaymentStatusKafkaEventListener for order id: {}", orderId);
+            } catch (OrderNotFoundException e) {
+                log.error("Order not found, order id: {}", orderId);
             }
         });
     }

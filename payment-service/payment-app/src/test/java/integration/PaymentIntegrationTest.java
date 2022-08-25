@@ -6,8 +6,8 @@ import com.bigos.common.domain.vo.OrderId;
 import com.bigos.payment.app.PaymentServiceApplication;
 import com.bigos.payment.domain.model.Payment;
 import com.bigos.payment.domain.model.Wallet;
-import com.bigos.payment.domain.ports.dto.CancelPaymentCommand;
-import com.bigos.payment.domain.ports.dto.MakePaymentCommand;
+import com.bigos.payment.domain.ports.dto.payment.CancelPaymentCommand;
+import com.bigos.payment.domain.ports.dto.payment.MakePaymentCommand;
 import com.bigos.payment.domain.ports.in.message.PaymentMessageListener;
 import com.bigos.payment.domain.ports.out.repository.PaymentRepository;
 import com.bigos.payment.domain.ports.out.repository.WalletRepository;
@@ -84,10 +84,10 @@ class PaymentIntegrationTest {
     }
 
     private static MakePaymentCommand aMakePaymentCommand() {
-        return new MakePaymentCommand(UUID.randomUUID().toString(), ORDER_UUID.toString(), CUSTOMER_UUID.toString(), PAYMENT_PRICE);
+        return new MakePaymentCommand(UUID.randomUUID().toString(), UUID.randomUUID().toString(), ORDER_UUID.toString(), CUSTOMER_UUID.toString(), PAYMENT_PRICE);
     }
 
     private static CancelPaymentCommand aCancelPaymentCommand() {
-        return new CancelPaymentCommand(UUID.randomUUID().toString(), ORDER_UUID.toString(), CUSTOMER_UUID.toString(), PAYMENT_PRICE);
+        return new CancelPaymentCommand(UUID.randomUUID().toString(), UUID.randomUUID().toString(), ORDER_UUID.toString(), CUSTOMER_UUID.toString(), PAYMENT_PRICE);
     }
 }

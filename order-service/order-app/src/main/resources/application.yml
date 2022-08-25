@@ -46,3 +46,5 @@ order-service:
   order-cancelling-events-topic-name: order-cancelling-events
   payment-status-events-topic-name: payment-status-events
   restaurant-approval-events-topic-name: restaurant-approval-events
+  outbox-scheduler-fixed-rate: 15000
+  outbox-scheduler-initial-delay: 60000

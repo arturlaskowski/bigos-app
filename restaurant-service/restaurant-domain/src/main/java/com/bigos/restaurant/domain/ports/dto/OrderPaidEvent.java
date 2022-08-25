@@ -7,6 +7,7 @@ import java.util.List;
 @Builder
 public record OrderPaidEvent(
         String orderId,
+        String sageId,
         String restaurantId,
         BigDecimal price,
         List<OrderItemDto> orderItems,

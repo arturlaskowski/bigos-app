@@ -45,7 +45,7 @@ class RestaurantDomainServiceTest {
         assertEquals(OrderApprovalStatus.REJECTED, orderProcessed.getApprovalStatus());
         assertTrue(orderProcessedEvent instanceof OrderRejectedEvent);
         assertEquals("Restaurant is unavailable. " + restaurant.getRestaurantId(),
-                ((OrderRejectedEvent) orderProcessedEvent).getFailureMessage());
+                ((OrderRejectedEvent) orderProcessedEvent).getFailureMessages());
     }
 
     @Test
@@ -60,7 +60,7 @@ class RestaurantDomainServiceTest {
         assertEquals(OrderApprovalStatus.REJECTED, orderProcessed.getApprovalStatus());
         assertTrue(orderProcessedEvent instanceof OrderRejectedEvent);
         assertEquals("Order amount: 27.33 is different than total products price : 30.00",
-                ((OrderRejectedEvent) orderProcessedEvent).getFailureMessage());
+                ((OrderRejectedEvent) orderProcessedEvent).getFailureMessages());
     }
 
     private static Restaurant availableRestaurant() {

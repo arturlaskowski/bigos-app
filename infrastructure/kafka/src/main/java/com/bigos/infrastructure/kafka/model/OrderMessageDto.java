@@ -14,7 +14,7 @@ public record OrderMessageDto(
         String restaurantId,
         BigDecimal price,
         List<BasketItemMessageDto> basket,
-        OrderAddressDto deliveryAddress,
+        OrderAddressMessageDto deliveryAddress,
         String status,
         Instant creationDate,
         String failureMessages

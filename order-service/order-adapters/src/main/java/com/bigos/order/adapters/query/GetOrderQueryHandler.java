@@ -2,6 +2,7 @@ package com.bigos.order.adapters.query;
 
 
 import com.bigos.common.domain.vo.OrderId;
+import com.bigos.order.adapters.query.mapper.OrderQueryMapper;
 import com.bigos.order.domain.model.Order;
 import com.bigos.order.domain.ports.dto.order.get.GetOrderQuery;
 import com.bigos.order.domain.ports.dto.order.get.GetOrderResponse;

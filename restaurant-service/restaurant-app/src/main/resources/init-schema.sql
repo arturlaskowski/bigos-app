@@ -41,3 +41,28 @@ create table "restaurant".order_items
     order_id   uuid           not null,
     constraint order_items_pkey primary key (id)
 );
+
+create table "restaurant".order_processed_outbox
+(
+    id              uuid         not null,
+    saga_id         uuid         not null,
+    created_date    timestamp    not null,
+    send_date       timestamp,
+    aggregate_id    uuid         not null,
+    aggregate_name  varchar(50)  not null,
+    message_type    varchar(100) not null,
+    approval_status varchar(50)  not null,
+    outbox_status   varchar(50)  not null,
+    payload         jsonb        not null,
+    payload_type    varchar(200) not null,
+    version         integer      not null,
+    constraint outbox_pkey primary key (id)
+);
+
+create index "order_outbox_approval_status"
+    on "restaurant".order_processed_outbox
+        (message_type, approval_status);
+
+create unique index "order_outbox_saga_id_approval_status"
+    on "restaurant".order_processed_outbox
+        (message_type, saga_id, approval_status, outbox_status);

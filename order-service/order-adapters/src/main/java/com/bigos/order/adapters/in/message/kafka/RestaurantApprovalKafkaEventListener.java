@@ -3,10 +3,12 @@ package com.bigos.order.adapters.in.message.kafka;
 import com.bigos.common.domain.vo.OrderApprovalStatus;
 import com.bigos.infrastructure.kafka.config.cnosumer.KafkaConsumer;
 import com.bigos.infrastructure.kafka.model.events.RestaurantApprovalEventDtoKafka;
+import com.bigos.order.adapters.exception.OrderNotFoundException;
 import com.bigos.order.adapters.in.message.kafka.mapper.InputMessagingKafkaDataMapper;
 import com.bigos.order.domain.ports.dto.restaurant.RestaurantApprovalEvent;
 import com.bigos.order.domain.ports.in.message.RestaurantApprovalEventListener;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -37,12 +39,20 @@ public class RestaurantApprovalKafkaEventListener implements KafkaConsumer<Resta
                 messages.size(), keys.toString(), partitions.toString(), offsets.toString());
 
         messages.forEach(restaurantApprovalKafkaDto -> {
-            RestaurantApprovalEvent restaurantApprovalEvent = mapper.restaurantApprovalEventDtoKafkaToRestaurantApprovalEvent(restaurantApprovalKafkaDto);
-            if (OrderApprovalStatus.ACCEPTED == restaurantApprovalEvent.orderApprovalStatus()) {
-                restaurantApprovalEventListener.orderApproved(restaurantApprovalEvent);
+            String orderId = restaurantApprovalKafkaDto.getData().orderId();
+            try {
+                RestaurantApprovalEvent restaurantApprovalEvent = mapper.restaurantApprovalEventDtoKafkaToRestaurantApprovalEvent(restaurantApprovalKafkaDto);
+                if (OrderApprovalStatus.ACCEPTED == restaurantApprovalEvent.orderApprovalStatus()) {
+                    restaurantApprovalEventListener.orderApproved(restaurantApprovalEvent);
 
-            } else if (OrderApprovalStatus.REJECTED == restaurantApprovalEvent.orderApprovalStatus()) {
-                restaurantApprovalEventListener.orderRejected(restaurantApprovalEvent);
+                } else if (OrderApprovalStatus.REJECTED == restaurantApprovalEvent.orderApprovalStatus()) {
+                    restaurantApprovalEventListener.orderRejected(restaurantApprovalEvent);
+                }
+
+            } catch (OptimisticLockingFailureException e) {
+                log.error("Optimistic locking exception in RestaurantApprovalKafkaEventListener for order id: {}", orderId);
+            } catch (OrderNotFoundException e) {
+                log.error("Order not found, order id: {}", orderId);
             }
         });
     }

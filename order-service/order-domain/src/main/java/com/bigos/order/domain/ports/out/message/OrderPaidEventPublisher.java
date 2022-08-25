@@ -1,8 +1,11 @@
 package com.bigos.order.domain.ports.out.message;
 
 
-import com.bigos.common.domain.event.publisher.DomainEventPublisher;
-import com.bigos.order.domain.event.OrderPaidEvent;
+import com.bigos.order.domain.ports.dto.outbox.OrderPaidOutboxMessage;
 
-public interface OrderPaidEventPublisher extends DomainEventPublisher<OrderPaidEvent> {
+import java.util.function.Consumer;
+
+public interface OrderPaidEventPublisher {
+    void publish(OrderPaidOutboxMessage message, Consumer<OrderPaidOutboxMessage> outboxCallback);
+
 }

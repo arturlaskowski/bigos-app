@@ -1,8 +1,11 @@
 package com.bigos.order.domain.ports.out.message;
 
 
-import com.bigos.common.domain.event.publisher.DomainEventPublisher;
-import com.bigos.order.domain.event.OrderCancellingEvent;
+import com.bigos.order.domain.ports.dto.outbox.OrderCancellingOutboxMessage;
 
-public interface OrderCancellingEventPublisher extends DomainEventPublisher<OrderCancellingEvent> {
+import java.util.function.Consumer;
+
+public interface OrderCancellingEventPublisher {
+    void publish(OrderCancellingOutboxMessage message, Consumer<OrderCancellingOutboxMessage> outboxCallback);
+
 }

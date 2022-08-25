@@ -5,8 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableJpaRepositories(basePackages = {"com.bigos.restaurant.adapters.orderprocessed.out.repository", "com.bigos.restaurant.adapters.restaurant.out.repository"})
-@EntityScan(basePackages = {"com.bigos.restaurant.adapters.orderprocessed.model.entity", "com.bigos.restaurant.adapters.restaurant.model.entity"})
+@EnableJpaRepositories(basePackages = {"com.bigos.restaurant.adapters.orderprocessed.out.repository", "com.bigos.restaurant.adapters.restaurant.out.repository",
+        "com.bigos.restaurant.adapters.orderprocessed.outbox.repository"})
+@EntityScan(basePackages = {"com.bigos.restaurant.adapters.orderprocessed.model.entity", "com.bigos.restaurant.adapters.restaurant.model.entity",
+        "com.bigos.restaurant.adapters.orderprocessed.outbox.model.entity"})
 @SpringBootApplication(scanBasePackages = "com.bigos")
 public class RestaurantServiceApplication {
     public static void main(String[] args) {

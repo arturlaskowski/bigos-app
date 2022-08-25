@@ -39,6 +39,5 @@ public class InputMessagingKafkaDataMapper {
                 .orderApprovalStatus(OrderApprovalStatus.valueOf(restaurantApprovalMessageDto.orderApprovalStatus()))
                 .failureMessages(restaurantApprovalMessageDto.failureMessages())
                 .build();
-
     }
 }

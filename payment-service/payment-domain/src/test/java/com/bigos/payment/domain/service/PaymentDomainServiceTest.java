@@ -49,7 +49,7 @@ class PaymentDomainServiceTest {
         assertTrue(payment.isRejected());
         assertEquals(new Money(new BigDecimal("76.22")), wallet.getAmount());// the same
         assertTrue(paymentEvent instanceof PaymentRejectedEvent);
-        assertEquals("Payment price must be greater than zero. Payment price: -9.00", ((PaymentRejectedEvent) paymentEvent).getFailureMessage());
+        assertEquals("Payment price must be greater than zero. Payment price: -9.00", ((PaymentRejectedEvent) paymentEvent).getFailureMessages());
     }
 
     @Test
@@ -65,7 +65,7 @@ class PaymentDomainServiceTest {
         assertTrue(payment.isRejected());
         assertEquals(new Money(new BigDecimal("83.92")), wallet.getAmount());// the same
         assertTrue(paymentEvent instanceof PaymentRejectedEvent);
-        assertEquals("Payment price: 86.22 must be greater or equal to wallet amount: 83.92", ((PaymentRejectedEvent) paymentEvent).getFailureMessage());
+        assertEquals("Payment price: 86.22 must be greater or equal to wallet amount: 83.92", ((PaymentRejectedEvent) paymentEvent).getFailureMessages());
     }
 
     @Test
@@ -92,7 +92,7 @@ class PaymentDomainServiceTest {
         assertTrue(payment.isRejected());
         assertEquals(new Money(new BigDecimal("76.22")), wallet.getAmount());// the same
         assertTrue(paymentEvent instanceof PaymentRejectedEvent);
-        assertEquals("Payment price must be greater than zero. Payment price: -9.00", ((PaymentRejectedEvent) paymentEvent).getFailureMessage());
+        assertEquals("Payment price must be greater than zero. Payment price: -9.00", ((PaymentRejectedEvent) paymentEvent).getFailureMessages());
     }
 
     private Payment aPayment(BigDecimal paymentPrice) {

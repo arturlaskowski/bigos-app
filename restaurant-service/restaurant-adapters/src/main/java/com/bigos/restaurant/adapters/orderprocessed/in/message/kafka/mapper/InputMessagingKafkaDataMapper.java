@@ -13,8 +13,9 @@ public class InputMessagingKafkaDataMapper {
 
     public OrderPaidEvent orderPaidEventDtoKafkaToOrderPaidEvent(OrderPaidEventDtoKafka orderPaidEventDtoKafka) {
         OrderMessageDto orderMessageDto = orderPaidEventDtoKafka.getData();
-       return OrderPaidEvent.builder()
+        return OrderPaidEvent.builder()
                 .orderId(orderMessageDto.orderId())
+                .sageId(orderPaidEventDtoKafka.getSagaId())
                 .restaurantId(orderMessageDto.restaurantId())
                 .price(orderMessageDto.price())
                 .status(orderMessageDto.status())

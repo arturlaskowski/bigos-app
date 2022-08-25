@@ -43,3 +43,5 @@ payment-service:
   order-created-events-topic-name: order-created-events
   order-cancelling-events-topic-name: order-cancelling-events
   payment-status-events-topic-name: payment-status-events
+  outbox-scheduler-fixed-rate: 15000
+  outbox-scheduler-initial-delay: 60000
