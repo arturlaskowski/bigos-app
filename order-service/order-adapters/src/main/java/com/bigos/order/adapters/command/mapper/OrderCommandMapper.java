@@ -5,10 +5,10 @@ import com.bigos.order.domain.model.BasketItem;
 import com.bigos.order.domain.model.Order;
 import com.bigos.order.domain.model.OrderAddress;
 import com.bigos.order.domain.model.Product;
-import com.bigos.order.domain.ports.dto.order.create.BasketItemCreateDto;
-import com.bigos.order.domain.ports.dto.order.create.CreateOrderCommand;
-import com.bigos.order.domain.ports.dto.order.create.CreateOrderResponse;
-import com.bigos.order.domain.ports.dto.order.create.OrderAddressCreateDto;
+import com.bigos.order.domain.ports.dto.order.command.BasketItemDto;
+import com.bigos.order.domain.ports.dto.order.command.CreateOrderCommand;
+import com.bigos.order.domain.ports.dto.order.command.CreateOrderResponse;
+import com.bigos.order.domain.ports.dto.order.command.OrderAddressDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class OrderCommandMapper {
         return new CreateOrderResponse(order.getId().id());
     }
 
-    private List<BasketItem> orderItemsToOrderItemEntities(List<BasketItemCreateDto> basketItems) {
+    private List<BasketItem> orderItemsToOrderItemEntities(List<BasketItemDto> basketItems) {
         return basketItems.stream()
                 .map(basketItem ->
                         BasketItem.builder()
@@ -42,13 +42,13 @@ public class OrderCommandMapper {
                 .toList();
     }
 
-    private OrderAddress orderAddressDtoToOrderAddress(OrderAddressCreateDto orderAddressCreateDto) {
+    private OrderAddress orderAddressDtoToOrderAddress(OrderAddressDto orderAddressDto) {
         return new OrderAddress(
                 UUID.randomUUID(),
-                orderAddressCreateDto.street(),
-                orderAddressCreateDto.postalCode(),
-                orderAddressCreateDto.city(),
-                orderAddressCreateDto.houseNo()
+                orderAddressDto.street(),
+                orderAddressDto.postalCode(),
+                orderAddressDto.city(),
+                orderAddressDto.houseNo()
         );
     }
 }

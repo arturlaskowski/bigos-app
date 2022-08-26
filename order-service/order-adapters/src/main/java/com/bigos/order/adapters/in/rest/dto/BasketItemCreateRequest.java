@@ -1,10 +1,10 @@
-package com.bigos.order.domain.ports.dto.order.create;
+package com.bigos.order.adapters.in.rest.dto;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record BasketItemCreateDto(
+public record BasketItemCreateRequest(
         @NotNull UUID productId,
         @NotNull Integer quantity,
         @NotNull BigDecimal price,

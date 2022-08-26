@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Table(name = "orders")
-public class OrderEntity {
+public class OrderEntity implements Serializable {
 
     @Id
     private UUID id;

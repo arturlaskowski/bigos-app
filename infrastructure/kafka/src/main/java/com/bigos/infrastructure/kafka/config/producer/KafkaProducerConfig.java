@@ -11,13 +11,14 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.kafka.clients.producer.ProducerConfig.*;
 
 @Configuration
-public class KafkaProducerConfig {
+public class KafkaProducerConfig<T extends Serializable> {
 
     private final KafkaConfigProperties kafkaConfigProperties;
 
@@ -43,12 +44,12 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, MessageKafkaDto> producerFactory() {
+    public ProducerFactory<String, MessageKafkaDto<T>> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, MessageKafkaDto> kafkaTemplate() {
+    public KafkaTemplate<String, MessageKafkaDto<T>> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

@@ -32,7 +32,6 @@ public class OutboxEntity {
     @Column(nullable = false)
     private Instant createdDate;
 
-    @Column(nullable = false)
     private Instant sendDate;
 
     @Column(nullable = false)

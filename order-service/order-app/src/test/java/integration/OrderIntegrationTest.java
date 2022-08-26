@@ -1,14 +1,14 @@
 package integration;
 
 import com.bigos.common.domain.vo.OrderId;
+import com.bigos.common.domain.vo.OrderStatus;
 import com.bigos.order.app.OrderServiceApplication;
 import com.bigos.order.domain.exception.OrderDomainException;
 import com.bigos.order.domain.model.Order;
-import com.bigos.common.domain.vo.OrderStatus;
-import com.bigos.order.domain.ports.dto.order.create.BasketItemCreateDto;
-import com.bigos.order.domain.ports.dto.order.create.CreateOrderCommand;
-import com.bigos.order.domain.ports.dto.order.create.CreateOrderResponse;
-import com.bigos.order.domain.ports.dto.order.create.OrderAddressCreateDto;
+import com.bigos.order.domain.ports.dto.order.command.BasketItemDto;
+import com.bigos.order.domain.ports.dto.order.command.CreateOrderCommand;
+import com.bigos.order.domain.ports.dto.order.command.CreateOrderResponse;
+import com.bigos.order.domain.ports.dto.order.command.OrderAddressDto;
 import com.bigos.order.domain.ports.in.service.OrderApplicationService;
 import com.bigos.order.domain.ports.out.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
@@ -47,6 +47,12 @@ class OrderIntegrationTest {
     }
 
     @Test
+    void cannotCreateOrderWithWrongBasketPrice() {
+        //expected
+        assertThatExceptionOfType(OrderDomainException.class).isThrownBy(() -> orderApplicationService.createOrder(aOrderCommandWithWrongBasketPrice()));
+    }
+
+    @Test
     void canCreateOrder() {
         //given
         CreateOrderCommand createOrderCommand = aOrderCommand();
@@ -71,32 +77,41 @@ class OrderIntegrationTest {
 
         //mapping basket
         order.getBasket().forEach(basketItem -> {
-            BasketItemCreateDto basketItemCreateDto = createOrderCommand.items().stream()
+            BasketItemDto basketItemDto = createOrderCommand.items().stream()
                     .filter(dto -> dto.productId().equals(basketItem.getProduct().getId().id())).findFirst().get();
 
-            assertEquals(basketItemCreateDto.price().stripTrailingZeros(), basketItem.getProduct().getPrice().amount().stripTrailingZeros());
-            assertEquals(basketItemCreateDto.quantity(), basketItem.getQuantity().numberOfElements());
-            assertEquals(basketItemCreateDto.totalPrice().stripTrailingZeros(), basketItem.getTotalPrice().amount().stripTrailingZeros());
+            assertEquals(basketItemDto.price().stripTrailingZeros(), basketItem.getProduct().getPrice().amount().stripTrailingZeros());
+            assertEquals(basketItemDto.quantity(), basketItem.getQuantity().numberOfElements());
+            assertEquals(basketItemDto.totalPrice().stripTrailingZeros(), basketItem.getTotalPrice().amount().stripTrailingZeros());
             assertNotNull(basketItem.getItemNumber());
             assertNotNull(basketItem.getOrderId());
         });
     }
 
     private static CreateOrderCommand aOrderCommand() {
-        List<BasketItemCreateDto> basketItemsDto = List.of(new BasketItemCreateDto(PRODUCT_1_UUID, 2, new BigDecimal(10.00), new BigDecimal(20.00)),
-                new BasketItemCreateDto(PRODUCT_2_UUID, 3, new BigDecimal(15.50), new BigDecimal(46.50)));
+        List<BasketItemDto> basketItemsDto = List.of(new BasketItemDto(PRODUCT_1_UUID, 2, new BigDecimal(10.00), new BigDecimal(20.00)),
+                new BasketItemDto(PRODUCT_2_UUID, 3, new BigDecimal(15.50), new BigDecimal(46.50)));
 
-        OrderAddressCreateDto orderAddressCreateDto = new OrderAddressCreateDto("Prosta", "999-333", "Krzewie", "4");
+        OrderAddressDto orderAddressDto = new OrderAddressDto("Prosta", "999-333", "Krzewie", "4");
 
-        return new CreateOrderCommand(CUSTOMER_UUID, RESTAURANT_UUID, new BigDecimal(66.50), basketItemsDto, orderAddressCreateDto);
+        return new CreateOrderCommand(CUSTOMER_UUID, RESTAURANT_UUID, new BigDecimal(66.50), basketItemsDto, orderAddressDto);
     }
 
     private static CreateOrderCommand aOrderCommandWithWrongPrice() {
-        List<BasketItemCreateDto> basketItemsDto = List.of(new BasketItemCreateDto(PRODUCT_1_UUID, 2, new BigDecimal(10.00), new BigDecimal(20.00)),
-                new BasketItemCreateDto(PRODUCT_2_UUID, 3, new BigDecimal(15.50), new BigDecimal(30.00)));
+        List<BasketItemDto> basketItemsDto = List.of(new BasketItemDto(PRODUCT_1_UUID, 2, new BigDecimal(10.00), new BigDecimal(20.00)),
+                new BasketItemDto(PRODUCT_2_UUID, 3, new BigDecimal(15.50), new BigDecimal(30.00)));
 
-        OrderAddressCreateDto orderAddressCreateDto = new OrderAddressCreateDto("Prosta", "999-333", "Krzewie", "4");
+        OrderAddressDto orderAddressDto = new OrderAddressDto("Prosta", "999-333", "Krzewie", "4");
 
-        return new CreateOrderCommand(CUSTOMER_UUID, RESTAURANT_UUID, new BigDecimal(66.50), basketItemsDto, orderAddressCreateDto);
+        return new CreateOrderCommand(CUSTOMER_UUID, RESTAURANT_UUID, new BigDecimal(66.50), basketItemsDto, orderAddressDto);
+    }
+
+    private static CreateOrderCommand aOrderCommandWithWrongBasketPrice() {
+        List<BasketItemDto> basketItemsDto = List.of(new BasketItemDto(PRODUCT_1_UUID, 2, new BigDecimal(10.00), new BigDecimal(10.00)),
+                new BasketItemDto(PRODUCT_2_UUID, 3, new BigDecimal(15.50), new BigDecimal(30.00)));
+
+        OrderAddressDto orderAddressDto = new OrderAddressDto("Prosta", "999-333", "Krzewie", "4");
+
+        return new CreateOrderCommand(CUSTOMER_UUID, RESTAURANT_UUID, new BigDecimal(56.50), basketItemsDto, orderAddressDto);
     }
 }

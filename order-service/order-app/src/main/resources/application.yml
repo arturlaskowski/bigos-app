@@ -15,7 +15,13 @@ spring:
     url: jdbc:postgresql://localhost:5401/postgres?currentSchema=order&binaryTransfer=true&reWriteBatchedInserts=true
     username: postgres
     password: postgres
-
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+    initialization-mode: always
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
 
 kafka-config:
   bootstrap-servers: localhost:19092, localhost:29092

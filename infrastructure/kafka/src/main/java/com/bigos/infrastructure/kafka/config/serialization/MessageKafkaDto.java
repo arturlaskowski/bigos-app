@@ -12,7 +12,7 @@ import static java.util.UUID.randomUUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageKafkaDto<DTO extends Serializable> implements TypeDto, Serializable {
+public class MessageKafkaDto<T extends Serializable> implements TypeDto, Serializable {
 
     private String dataId;
 
@@ -22,11 +22,11 @@ public class MessageKafkaDto<DTO extends Serializable> implements TypeDto, Seria
 
     private String type;
 
-    private DTO data;
+    private T data;
 
     private String sagaId;
 
-    protected MessageKafkaDto(String dataId, Instant createdAt, DTO data, String sageId) {
+    protected MessageKafkaDto(String dataId, Instant createdAt, T data, String sageId) {
         this.dataId = dataId;
         setCreatedAt(createdAt);
         this.data = data;
@@ -58,7 +58,7 @@ public class MessageKafkaDto<DTO extends Serializable> implements TypeDto, Seria
         this.createdAt = createdAt;
     }
 
-    public DTO getData() {
+    public T getData() {
         return data;
     }
 

@@ -59,5 +59,4 @@ class OrderProcessedTest {
         assertEquals("Order amount: 27.33 is different than total products price : 30.00", restaurantDomainException.getMessage());
 
     }
-
 }

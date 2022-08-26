@@ -1,8 +1,8 @@
-package com.bigos.order.domain.ports.dto.order.create;
+package com.bigos.order.adapters.in.rest.dto;
 
 import javax.validation.constraints.NotNull;
 
-public record OrderAddressCreateDto(
+public record OrderAddressCreateRequest(
         @NotNull String street,
         @NotNull String postalCode,
         @NotNull String city,

@@ -1,15 +1,15 @@
-package com.bigos.order.domain.ports.dto.order.create;
+package com.bigos.order.adapters.in.rest.dto;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-public record CreateOrderCommand(
+public record CreateOrderRequest(
         @NotNull UUID customerId,
         @NotNull UUID restaurantId,
         @NotNull BigDecimal price,
-        @NotNull List<BasketItemCreateDto> items,
-        @NotNull OrderAddressCreateDto address
+        @NotNull List<BasketItemCreateRequest> items,
+        @NotNull OrderAddressCreateRequest address
 ) {
 }

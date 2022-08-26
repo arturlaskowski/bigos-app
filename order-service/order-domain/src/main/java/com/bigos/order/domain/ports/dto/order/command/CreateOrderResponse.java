@@ -1,4 +1,4 @@
-package com.bigos.order.domain.ports.dto.order.create;
+package com.bigos.order.domain.ports.dto.order.command;
 
 import java.util.UUID;
 
