@@ -43,7 +43,8 @@ Bigos app consists of a few projects:
 ## Domain-driven design
 
 Domain-driven design, as the name suggests, is an approach to software development that focuses the development on programming a model of a domain.
-The topic is too broad to be described in the readMe project :) To better understand the subject, I recommend the book **Implementing Domain-Driven Design** by Vaughn, Vernon.
+The topic is too broad to be described in the readMe project :) \
+To better understand the subject, I recommend the book **Implementing Domain-Driven Design** by Vaughn, Vernon.
 
 Sample DDD building blocks in BigosApp:
 * [Entity](order-service/order-adapters/src/main/java/com/bigos/order/adapters/model/entity/OrderEntity.java)
@@ -135,7 +136,7 @@ There are two main ways of saga management: *choreography* and *orchestration*:
 * Choreography - is a way without a centralized control point, i.e. each service can publish events that will be read by a few services.
 * Orchestration - is a way where there exist one central point (the orchestrator) coordinating saga participants. The orchestrator is responsible for managing the overall transaction status.
 
-Of course, as usual in programming, we will adapt the solution to our needs :)
+Of course, as usual in programming, we will adapt the solution to our needs :) \
 We can mix these ways of saga coordination and I made it in the Bigos app.
 But before I describe why I use a mix of these, let me show you how the choreography or the orchestration could be implemented in Bigos App.
 A quick reminder of the difference between an _event_ and a _command_
@@ -235,9 +236,9 @@ If something goes wrong, the application can try again and again, because it has
 When the application successfully emits this event to Kafka, this event can be deleted from the database or its status can be changed.
 This pattern solves the previously described problem.
 Remember to implement idempotent consumer while using the Outbox Pattern.
-Even if you don't use Outbox Pattern but use a message broker that guarantees at-least-once delivery you should implement idempotent consumer. 
+Even if you don't use Outbox Pattern but use a message broker that guarantees _at-least-once_ delivery you should implement idempotent consumer. 
 ## How to run
-The Bigos app can be run in an easy way using docker compose.
+The Bigos app can be run in an easy way using docker compose. \
 When you use commend `docker compose up` in [docker catalog](infrastructure/docker) all infrastructure should start up:
 * postgres
 * zookeeper
