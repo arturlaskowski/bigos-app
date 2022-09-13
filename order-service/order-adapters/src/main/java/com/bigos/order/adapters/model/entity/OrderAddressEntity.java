@@ -3,6 +3,7 @@ package com.bigos.order.adapters.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
@@ -11,7 +12,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Table(name = "order_address")
-public class OrderAddressEntity {
+public class OrderAddressEntity implements Serializable {
 
     @Id
     private UUID id;

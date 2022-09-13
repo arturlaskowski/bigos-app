@@ -10,8 +10,8 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "postgres"
-    volumes:
-      - "./volumes/postgres/"
+#    volumes:
+#      - "./volumes/postgres:/var/lib/postgresql/data"
   zookeeper:
     container_name: bigos-zookeeper
     image: confluentinc/cp-zookeeper:${KAFKA_VERSION}
@@ -27,8 +27,8 @@ services:
       ZOOKEEPER_INIT_LIMIT: 5
       ZOOKEEPER_SYNC_LIMIT: 2
       ZOOKEEPER_SERVERS: 'zookeeper:2888:3888'
-    volumes:
-      - "./volumes/zookeeper:/var/lib/zookeeper/data"
+#    volumes:
+#      - "./volumes/zookeeper:/var/lib/zookeeper/data"
     networks:
       bigos-network:
   schema-registry:
@@ -68,8 +68,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_COMPRESSION_TYPE: producer
-    volumes:
-      - "./volumes/kafka/broker1:/var/lib/kafka/data"
+#    volumes:
+#      - "./volumes/kafka/broker1:/var/lib/kafka/data"
     networks:
       bigos-network:
   kafka-broker2:
@@ -90,8 +90,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
       KAFKA_COMPRESSION_TYPE: producer
-    volumes:
-      - "./volumes/kafka/broker2:/var/lib/kafka/data"
+#    volumes:
+#      - "./volumes/kafka/broker2:/var/lib/kafka/data"
     networks:
       bigos-network:
   kafka-manager:
