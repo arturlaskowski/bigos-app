@@ -8,7 +8,8 @@
    4.2 [Saga pattern](#saga-pattern)    
    4.3 [Outbox pattern](#outbox-pattern)
 5. [How to run](#how-to-run)
-6. [Contact with me](#contact-with-me)
+6. [App guide](#app-guide)
+7. [Contact with me](#contact-with-me)
 
 
 ## About
@@ -254,6 +255,107 @@ After that, you can run all microservices. The order doesn't matter:
 * order-service
 * payment-service
 * restaurant-service
+
+## App guide
+During the application's start, data should be automatically added to the database. It allows testing the most famous cases.
+The requests triggering example cases can be found below.
+
+1. Request to create an order (happy path)
+* PATH: **POST** _http://localhost:8001/orders_
+* Body:
+```json
+{
+   "customerId": "4ece4645-2658-4c54-a182-b0edcfa46d00",
+   "restaurantId": "2888ec2e-6f27-464d-bb68-b7226e2d7d3a",
+   "price": 45.50,
+   "items": [
+      {
+         "productId": "1ecf862b-6395-412c-ba56-59d38e2764a3",
+         "quantity": 3,
+         "price": 10.0,
+         "totalPrice": 30.0
+      },
+      {
+         "productId": "1ecf862b-6395-412c-ba56-59d38e2764a5",
+         "quantity": 1,
+         "price": 15.5,
+         "totalPrice": 15.5
+      }
+   ],
+   "address": {
+      "street": "Cicha",
+      "postalCode": "87-820",
+      "city": "Krzewie",
+      "houseNo": "1"
+   }
+}
+```
+
+2. Request rejected payment by Payment Service (not enough money)
+* PATH: **POST** _http://localhost:8001/orders_
+* Body:
+
+```json
+{
+    "customerId": "4ece4645-2658-4c54-a182-b0edcfa46d00",
+    "restaurantId": "2888ec2e-6f27-464d-bb68-b7226e2d7d3a",
+    "price": 2031.0,
+    "items": [
+        {
+            "productId": "1ecf862b-6395-412c-ba56-59d38e2764a3",
+            "quantity": 200,
+            "price": 10.0,
+            "totalPrice": 2000.0
+        },
+        {
+            "productId": "1ecf862b-6395-412c-ba56-59d38e2764a5",
+            "quantity": 2,
+            "price": 15.5,
+            "totalPrice": 31.0
+        }
+    ],
+    "address": {
+        "street": "Cicha",
+        "postalCode": "87-820",
+        "city": "Krzewie",
+        "houseNo": "1"
+    }
+}
+```
+
+3. Request rejected an order by Restaurant Service (restaurant unavailable)
+* PATH: **POST** _http://localhost:8001/orders_
+* Body:
+```json
+{
+    "customerId": "4ece4645-2658-4c54-a182-b0edcfa46d00",
+    "restaurantId": "4f2f007a-b659-492b-a784-ea7eefd52d8a",
+    "price": 45.50,
+    "items": [
+        {
+            "productId": "1ecf862b-6395-412c-ba56-59d38e2764a3",
+            "quantity": 3,
+            "price": 10.0,
+            "totalPrice": 30.0
+        },
+        {
+            "productId": "1ecf862b-6395-412c-ba56-59d38e2764a5",
+            "quantity": 1,
+            "price": 15.5,
+            "totalPrice": 15.5
+        }
+    ],
+    "address": {
+        "street": "Cicha",
+        "postalCode": "87-820",
+        "city": "Krzewie",
+        "houseNo": "1"
+    }
+}
+```
+
+Request to get information about the order:
+* PATH: **GET** _http://localhost:8001/orders/{orderId}_
 
 ## Contact with me
 If you have any questions for me, feel free to contact with me:
