@@ -3,10 +3,10 @@ package com.bigos.order.domain;
 import com.bigos.common.domain.vo.Money;
 import com.bigos.common.domain.vo.ProductId;
 import com.bigos.common.domain.vo.Quantity;
-import com.bigos.order.domain.model.BasketItem;
-import com.bigos.order.domain.model.Order;
+import com.bigos.order.domain.core.BasketItem;
+import com.bigos.order.domain.core.Order;
 import com.bigos.common.domain.vo.OrderStatus;
-import com.bigos.order.domain.model.Product;
+import com.bigos.order.domain.core.Product;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -41,7 +41,7 @@ public class OrderFixture {
         return Order.builder().status(status).build();
     }
 
-    public static Order aOrderWithInicializacion(BigDecimal price, BasketItem... basketItem) {
+    public static Order aInitializerOrder(BigDecimal price, BasketItem... basketItem) {
         Order order = aOrder(price, basketItem);
         order.initialize();
         return order;

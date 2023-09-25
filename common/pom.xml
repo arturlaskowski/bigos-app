@@ -13,7 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>common-domain</module>
-        <module>common-adapters</module>
+        <module>common-application</module>
+        <module>common-entities</module>
     </modules>
 
     <properties>

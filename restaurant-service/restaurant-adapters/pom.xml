@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.bigos.app</groupId>
-            <artifactId>common-adapters</artifactId>
+            <artifactId>common-application</artifactId>
         </dependency>
         <dependency>
             <groupId>com.bigos.app</groupId>
@@ -28,20 +28,24 @@
             <artifactId>restaurant-domain</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <groupId>com.bigos.app</groupId>
+            <artifactId>restaurant-entities</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bigos.app</groupId>
+            <artifactId>restaurant-application</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

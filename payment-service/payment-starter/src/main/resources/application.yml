@@ -1,0 +1,53 @@
+server:
+  port: 8002
+
+logging:
+  level:
+    com.bigos.app: DEBUG
+
+spring:
+  application:
+    name: payment-service
+  jpa:
+    open-in-view: false
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5401/postgres?currentSchema=payment&binaryTransfer=true&reWriteBatchedInserts=true
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      platform: postgres
+
+kafka-config:
+  bootstrap-servers: localhost:19092, localhost:29092
+  schema-registry-url: http://localhost:8081
+  num-of-partitions: 6
+  replication-factor: 2
+  producer:
+    batch-size: 16384
+    batch-size-boost-factor: 100
+    linger-ms: 5
+    request-timeout-ms: 60000
+    retry-count: 5
+  consumer:
+    batch-listener: true
+    auto-startup: true
+    concurrency-level: 3
+    session-timeout-ms: 10000
+    heartbeat-interval-ms: 3000
+    max-poll-interval-ms: 300000
+    max-poll-records: 500
+    max-partition-fetch-bytes-default: 1048576
+    max-partition-fetch-bytes-boost-factor: 1
+    poll-timeout-ms: 150
+
+payment-service:
+  order-created-events-topic-name: order-created-events
+  order-cancelling-events-topic-name: order-cancelling-events
+  payment-status-events-topic-name: payment-status-events
+  outbox-scheduler-fixed-rate: 15000
+  outbox-scheduler-initial-delay: 60000

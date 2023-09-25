@@ -1,7 +1,7 @@
 package com.bigos.payment.domain.event;
 
 import com.bigos.common.domain.event.DomainEvent;
-import com.bigos.payment.domain.model.Payment;
+import com.bigos.payment.domain.core.Payment;
 import lombok.Getter;
 
 import java.time.Instant;

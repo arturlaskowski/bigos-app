@@ -3,8 +3,8 @@ package com.bigos.restaurant.domain;
 import com.bigos.common.domain.vo.Money;
 import com.bigos.common.domain.vo.OrderId;
 import com.bigos.common.domain.vo.Quantity;
-import com.bigos.restaurant.domain.model.OrderItem;
-import com.bigos.restaurant.domain.model.OrderProcessed;
+import com.bigos.restaurant.domain.orderprocessed.core.OrderItem;
+import com.bigos.restaurant.domain.orderprocessed.core.OrderProcessed;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -38,14 +38,6 @@ public class MessageKafkaDto<T extends Serializable> implements TypeDto, Seriali
         return Instant.now();
     }
 
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public String getDataId() {
-        return dataId;
-    }
-
     @Override
     public String getType() {
         return type;
@@ -58,11 +50,4 @@ public class MessageKafkaDto<T extends Serializable> implements TypeDto, Seriali
         this.createdAt = createdAt;
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public String getSagaId() {
-        return sagaId;
-    }
 }

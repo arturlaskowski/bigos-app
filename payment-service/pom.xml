@@ -14,7 +14,9 @@
     <modules>
         <module>payment-domain</module>
         <module>payment-adapters</module>
-        <module>payment-app</module>
+        <module>payment-application</module>
+        <module>payment-starter</module>
+        <module>payment-entities</module>
     </modules>
 
     <properties>

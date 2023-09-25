@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +15,11 @@ public class MessageKafkaDtoJsonDeserializer implements Deserializer<TypeDto> {
 
     private JsonDeserializer<MessageKafkaDto> messageKafkaJsonDeserializer;
 
-    @Autowired
-    protected ObjectMapper objectMapper;
+    protected final ObjectMapper objectMapper;
+
+    public MessageKafkaDtoJsonDeserializer(final ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {

@@ -28,7 +28,7 @@ BDW. Bigos - it is a polish meal :)
 
 The application consists of 3 microservices that communicate with one another via Apache Kafka.  
 Each microservice has its own PostgreSQL database
-(for our needs, I used single a database with different schemas).
+(for my needs, I used single a database with different schemas).
 
 The whole system can be easily launched using `docker-compose` ([How to run](#how-to-run))
 
@@ -48,14 +48,14 @@ The topic is too broad to be described in the readMe project :) \
 To better understand the subject, I recommend the book **Implementing Domain-Driven Design** by Vaughn, Vernon.
 
 Sample DDD building blocks in BigosApp:
-* [Entity](order-service/order-adapters/src/main/java/com/bigos/order/adapters/model/entity/OrderEntity.java)
-* [Aggregate](order-service/order-domain/src/main/java/com/bigos/order/domain/model/Order.java)
+* [Entity](order-service/order-entities/src/main/java/com/bigos/order/entities/OrderEntity.java)
+* [Aggregate](order-service/order-domain/src/main/java/com/bigos/order/domain/core/Order.java)
 * [Value Object](common/common-domain/src/main/java/com/bigos/common/domain/vo/Money.java)
-* [Domain Service](order-service/order-domain/src/main/java/com/bigos/order/domain/service/OrderDomainServiceImpl.java)
-* [Application Service](order-service/order-adapters/src/main/java/com/bigos/order/adapters/OrderApplicationServiceImpl.java)
-* [Repository](order-service/order-adapters/src/main/java/com/bigos/order/adapters/out/reposiotry/OrderRepositoryImpl.java)
+* [Domain Service](order-service/order-domain/src/main/java/com/bigos/order/domain/OrderDomainService.java)
+* [Application Service](order-service/order-application/src/main/java/com/bigos/order/application/OrderApplicationService.java)
+* [Repository](order-service/order-adapters/src/main/java/com/bigos/order/adapters/reposiotry/SqlOrderRepository.java)
 * [Event](order-service/order-domain/src/main/java/com/bigos/order/domain/event/OrderCreatedEvent.java)
-* [Saga](order-service/order-adapters/src/main/java/com/bigos/order/adapters/saga/OrderPaymentSaga.java)
+* [Saga](order-service/order-application/src/main/java/com/bigos/order/application/saga/OrderPaymentSaga.java)
 
 ## Implemented patterns
 
@@ -68,7 +68,7 @@ from external dependencies.
 Ports are interfaces that will allow actors to communicate with an application.
 Adapters, in turn, implement the interfaces defined by the ports and glue the application with the outside world (for example Rest API).
 
-In the Bigos app, each microservice contains 3 maven modules:
+In the Bigos app, each microservice contains 5 maven modules:
 
 * ##### Domain
 It is the core of microservice. This layer does not depend on another layer,
@@ -76,13 +76,22 @@ database, Spring framework, etc.
 In this layer, ports that describe how the domain can be used are defined.
 This layer is the most important, therefore it is covered by unit testing.
 
-* ##### Adapters
-It outsources the operation to domain objects and it uses frameworks to ensure data persistence and transactionality.
-This layer is also responsible for communication with PostgreSQL and Apache Kafka.
+* ##### Entities
+This layer represents the database model, i.e., entities with JPA.
 
-* ##### App
+* ##### Application
+It contains application services that orchestrate the flow of data.
+It outsources the operation to domain objects and it uses frameworks.
+Here, there are things related to the technical aspects of the application,
+such as ensuring transactionality.
+
+* ##### Adapters
+The layer responsible for communication with external entities 
+entering and exiting the application, such as Rest API, PostgreSQL, and Apache Kafka.
+
+* ##### Starter
 This module holds everything together. It is in charge of microservice launching and parameters configuration.
-It contains integration tests.
+It contains end to end tests and architecture tests.
 
 Using maven modules protects against improper use of the given layers.
 In the `pom.xml` file, the dependencies between layers can be defined.

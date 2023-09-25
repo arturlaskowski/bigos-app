@@ -1,7 +1,7 @@
 package com.bigos.infrastructure.kafka.config.producer;
 
-import com.bigos.common.domain.outbox.AbstractOutboxMessage;
-import com.bigos.common.domain.outbox.OutboxStatus;
+import com.bigos.common.applciaiton.outbox.model.AbstractOutboxMessage;
+import com.bigos.common.applciaiton.outbox.model.OutboxStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.kafka.support.SendResult;

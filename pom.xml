@@ -43,7 +43,12 @@
             </dependency>
             <dependency>
                 <groupId>com.bigos.app</groupId>
-                <artifactId>common-adapters</artifactId>
+                <artifactId>common-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>common-entities</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -58,7 +63,12 @@
             </dependency>
             <dependency>
                 <groupId>com.bigos.app</groupId>
-                <artifactId>order-app</artifactId>
+                <artifactId>order-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>order-entities</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -78,7 +88,12 @@
             </dependency>
             <dependency>
                 <groupId>com.bigos.app</groupId>
-                <artifactId>payment-app</artifactId>
+                <artifactId>payment-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>payment-entities</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -93,7 +108,12 @@
             </dependency>
             <dependency>
                 <groupId>com.bigos.app</groupId>
-                <artifactId>restaurant-app</artifactId>
+                <artifactId>restaurant-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bigos.app</groupId>
+                <artifactId>restaurant-entities</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

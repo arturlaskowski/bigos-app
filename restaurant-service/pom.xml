@@ -14,7 +14,9 @@
     <modules>
         <module>restaurant-domain</module>
         <module>restaurant-adapters</module>
-        <module>restaurant-app</module>
+        <module>restaurant-application</module>
+        <module>restaurant-entities</module>
+        <module>restaurant-starter</module>
     </modules>
 
     <properties>

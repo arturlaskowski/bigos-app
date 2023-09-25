@@ -13,8 +13,10 @@
     <packaging>pom</packaging>
     <modules>
         <module>order-domain</module>
-        <module>order-app</module>
+        <module>order-application</module>
         <module>order-adapters</module>
+        <module>order-entities</module>
+        <module>order-starter</module>
     </modules>
 
     <properties>
