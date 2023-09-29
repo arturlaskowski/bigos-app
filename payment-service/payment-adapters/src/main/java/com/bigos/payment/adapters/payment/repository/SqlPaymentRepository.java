@@ -37,7 +37,6 @@ public class SqlPaymentRepository implements PaymentRepository {
     }
 }
 
-
 @Repository
 interface PaymentRepositoryJpa extends CrudRepository<PaymentEntity, UUID> {
 
