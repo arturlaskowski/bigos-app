@@ -95,7 +95,7 @@ It contains end to end tests and architecture tests.
 
 Using maven modules protects against improper use of the given layers.
 In the `pom.xml` file, the dependencies between layers can be defined.
-For example, the domain module depends only on the common-domain module [pom.xml from order-domain](order-service/pom.xml)  
+For example, the domain module depends only on the common-domain module [pom.xml from order domain layer](order-service/order-domain/pom.xml)  
 The correctness of the proper use of the application's layers is also protected
 by architecture tests written using ArchUnit.
 
@@ -370,3 +370,6 @@ Request to get information about the order:
 If you have any questions for me, feel free to contact with me:
 * [Linkedin](https://www.linkedin.com/in/artur-laskowski94/)
 * Email: artur.laskowski94@gmail.com
+
+If you are from Poland, I warmly invite you to my blog where I publish content dedicated to experienced Java developers: 
+* [javasenior.pl](https://javasenior.pl/)
